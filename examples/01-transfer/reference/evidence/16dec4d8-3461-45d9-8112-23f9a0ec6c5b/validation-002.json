@@ -1,0 +1,36 @@
+{
+  "stderr": "[Error] Inner Parser: Parse error: unexpected token '</block>' following token\n'...'.\n\tSource(/data/tasks/04ece50f-4f12-4458-8fca-a4822a8cad76/input/spec.k)\n\tLocation(58,21,58,29)\n\t58 |\t        <block> ... </block>\n\t   .\t                    ^~~~~~~~\n[Error] Inner Parser: Parse error: unexpected token '</block>' following token\n'...'.\n\tSource(/data/tasks/04ece50f-4f12-4458-8fca-a4822a8cad76/input/spec.k)\n\tLocation(139,21,139,29)\n\t139 |\t        <block> ... </block>\n\t    .\t                    ^~~~~~~~\n[Error] Inner Parser: Parse error: unexpected token '</block>' following token\n'...'.\n\tSource(/data/tasks/04ece50f-4f12-4458-8fca-a4822a8cad76/input/spec.k)\n\tLocation(214,21,214,29)\n\t214 |\t        <block> ... </block>\n\t    .\t                    ^~~~~~~~\n[Error] Inner Parser: Parse error: unexpected token '</block>' following token\n'...'.\n\tSource(/data/tasks/04ece50f-4f12-4458-8fca-a4822a8cad76/input/spec.k)\n\tLocation(289,21,289,29)\n\t289 |\t        <block> ... </block>\n\t    .\t                    ^~~~~~~~\n[Error] Inner Parser: Parse error: unexpected token '</block>' following token\n'...'.\n\tSource(/data/tasks/04ece50f-4f12-4458-8fca-a4822a8cad76/input/spec.k)\n\tLocation(364,21,364,29)\n\t364 |\t        <block> ... </block>\n\t    .\t                    ^~~~~~~~\n[Error] Compiler: Had 5 parsing errors.\n",
+  "stdout": "",
+  "task": {
+    "createdAt": "2026-09-15T20:47:26.468052Z",
+    "error": null,
+    "finishedAt": "2026-09-15T20:48:42.123651Z",
+    "id": "04ece50f-4f12-4458-8fca-a4822a8cad76",
+    "kind": "proofDryRun",
+    "result": {
+      "definitionId": "7_1_337-haskell-evm-4f4c3843076c-d3c03864e4e3060c39ec00a2764d94065fd7b5ca0952e55447b2fb9b642df5b8",
+      "valid": false
+    },
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "startedAt": "2026-09-15T20:48:34.893444Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 7230,
+      "queueMilliseconds": 68425,
+      "totalMilliseconds": 75655
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 6462,
+        "exitCode": 113,
+        "finishedAt": "2026-09-15T20:48:41.844906Z",
+        "outcome": "exit_error",
+        "startedAt": "2026-09-15T20:48:35.382307Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

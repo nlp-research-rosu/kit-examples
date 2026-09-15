@@ -1,0 +1,12 @@
+{
+  "task": {
+    "createdAt": "2026-09-15T21:32:50.192467065Z",
+    "id": "8ffdab7e-2627-448d-bf2f-0c2c81d66e9a",
+    "kind": "proof",
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "status": "queued"
+  }
+}

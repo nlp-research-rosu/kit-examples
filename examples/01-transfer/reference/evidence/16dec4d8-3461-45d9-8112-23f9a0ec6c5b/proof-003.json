@@ -1,0 +1,37 @@
+{
+  "stderr": "WARNING 2026-09-15 16:09:32,815 kevm_pyk.__main__ - Ignoring --equation-max-local-steps for non-booster server: kore-rpc\n",
+  "stdout": "PROOF PASSED: SPEC.transfer-overflow\nPROOF PASSED: SPEC.transfer-success\nPROOF PASSED: SPEC.transfer-insufficient\nPROOF PASSED: SPEC.transfer-not-payable\nPROOF PASSED: SPEC.transfer-self\n",
+  "task": {
+    "createdAt": "2026-09-15T21:09:28.256152Z",
+    "error": null,
+    "finishedAt": "2026-09-15T21:21:10.355417Z",
+    "id": "ed85c28c-e50d-4e3e-bd84-795136824ff1",
+    "kind": "proof",
+    "result": {
+      "definitionId": "7_1_337-haskell-evm-4f4c3843076c-d3c03864e4e3060c39ec00a2764d94065fd7b5ca0952e55447b2fb9b642df5b8",
+      "outcome": "proved",
+      "residual": null
+    },
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "startedAt": "2026-09-15T21:09:31.961278Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 698394,
+      "queueMilliseconds": 3705,
+      "totalMilliseconds": 702099
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 697605,
+        "exitCode": 0,
+        "finishedAt": "2026-09-15T21:21:10.067972Z",
+        "outcome": "success",
+        "startedAt": "2026-09-15T21:09:32.462490Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}
