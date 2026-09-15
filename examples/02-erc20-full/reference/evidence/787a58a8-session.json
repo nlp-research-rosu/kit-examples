@@ -1,0 +1,12 @@
+{
+  "attemptsUsed": 2,
+  "projectRoot": "/home/dmn/kit-example/examples/02-erc20-full",
+  "runsUsed": 0,
+  "semantics": {
+    "commit": "4f4c3843076c",
+    "id": "evm",
+    "repo": "https://github.com/nlp-research-rosu/semantics-evm"
+  },
+  "sessionId": "787a58a8-8dc5-4b9e-93ed-40e49f22bedf",
+  "validationsUsed": 4
+}

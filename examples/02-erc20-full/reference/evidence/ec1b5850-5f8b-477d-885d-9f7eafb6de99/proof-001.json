@@ -1,0 +1,37 @@
+{
+  "stderr": "WARNING 2026-09-15 18:04:21,866 kevm_pyk.__main__ - Ignoring --equation-max-local-steps for non-booster server: kore-rpc\n",
+  "stdout": "PROOF PASSED: SPEC.transfer-success-self\nPROOF PASSED: SPEC.transferFrom-success-self\nPROOF PASSED: SPEC.dispatch-unknown-selector\nPROOF PASSED: SPEC.approve-revert-value\nPROOF PASSED: SPEC.approve-success\nPROOF PASSED: SPEC.balanceOf-success\nPROOF PASSED: SPEC.transferFrom-success\nPROOF PASSED: SPEC.transferFrom-revert-value\nPROOF PASSED: SPEC.allowance-success\nPROOF PASSED: SPEC.balanceOf-revert-value\nPROOF PASSED: SPEC.transfer-success\nPROOF PASSED: SPEC.transfer-revert-value\nPROOF PASSED: SPEC.transferFrom-overflow\nPROOF PASSED: SPEC.allowance-revert-value\nPROOF PASSED: SPEC.dispatch-short-calldata\nPROOF PASSED: SPEC.transfer-overflow\nPROOF PASSED: SPEC.transferFrom-fail\nPROOF PASSED: SPEC.transfer-fail\n",
+  "task": {
+    "createdAt": "2026-09-15T23:04:20.130219Z",
+    "error": null,
+    "finishedAt": "2026-09-15T23:31:35.657991Z",
+    "id": "46f4cc81-940d-4b4d-9110-46e9271b1816",
+    "kind": "proof",
+    "result": {
+      "definitionId": "7_1_337-haskell-evm-4f4c3843076c-bedddccf7c5b2d6a5a519595433473c3cba9f6e498772967529a4019c608adfb",
+      "outcome": "proved",
+      "residual": null
+    },
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "startedAt": "2026-09-15T23:04:20.756596Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 1634901,
+      "queueMilliseconds": 626,
+      "totalMilliseconds": 1635527
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 1633820,
+        "exitCode": 0,
+        "finishedAt": "2026-09-15T23:31:35.370883Z",
+        "outcome": "success",
+        "startedAt": "2026-09-15T23:04:21.550080Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

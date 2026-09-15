@@ -1,77 +1,139 @@
-# kit-example verification run notes (draft)
+# Run notes: verifying kit-example before handoff
 
-Environment: WSL Ubuntu 24.04 x64, kit b3dee27 (2026-09-15), kprover 0.1.0 built with cargo 1.89,
-Claude Code 2.1.197 (default model claude-opus-4-8), Prover evm@4f4c3843076c, K 7.1.337.
-Config: task_timeout_seconds=3600, max_proof_attempts=10, max_validation_attempts=10, max_run_attempts=5.
+Date: 2026-09-15/16 (UTC). Operator: Ovidiu, with Claude Code driving the runs.
 
-## Toolchain pass (README install + configure)
-- `git clone --recurse-submodules` of a private submodule works once `gh auth setup-git` has run. PASS
-- `cargo install --path third_party/kit/crates/kprover-cli` builds in 41 s. PASS
-- `kprover config` / `health` / `semantics` / `session start --semantics evm` all as documented. PASS
+## Environment
 
-## Example 1 (transfer) attempts
-- Attempt 1 (20:10Z): died 20 s in with SIGHUP. Harness error (launcher shell closed). Not a kit issue.
-- Attempt 2 (20:11Z-20:30Z, 18 min, rc=0): agent wrote SCOPE.md, spec.k (5 claims matching the
-  5 requested properties), verification.k; submitted `kprover validate` as a BACKGROUND shell task,
-  then said "I'll wait for the validation task notification" and ended its turn. In `claude -p` mode
-  that exits the process. The validation itself failed on the server: DEFINITION_COMPILATION_FAILED
-  (kompile exit 113) — i.e. the first verification.k did not compile; the agent never saw it.
-  One permission denial: a command prefixed with `SESS=... ` (env-assignment prefix defeats a
-  `Bash(mkdir:*)`-style allowlist).
-- Attempt 3 (20:32Z): relaunched with an appended system prompt: run kprover in the foreground,
-  no VAR= prefixes, never end the turn with a prover task pending; BASH_MAX_TIMEOUT_MS=3600000.
-  Session 16dec4d8. Timeline (UTC): 20:32 start; ~20:40 SCOPE.md/BYTECODE-ANALYSIS.md/spec.k
-  (5 claims) via generator scripts at project root; validation-001 kompile OK, kprove 113
-  (parse: 'CALLER'); validation-002 kprove 113 (parse: '</block>'); validation-003 valid=true;
-  spec-audit-1 PASS (inline); 20:53 proof-001 task df359f8d --claim transfer-not-payable proved
-  (74 s exec); proof-002 task a229cfab, 4 claims (insufficient, self, success, overflow) proved
-  (657 s exec); proof-003 task ed85c28c full spec, no filter (final positive run) submitted.
+| Item | Value |
+|---|---|
+| Host | WSL Ubuntu 24.04, x86_64 |
+| kit | `nlp-research-rosu/kit` @ `b3dee27` (2026-09-15), loaded with `claude --plugin-dir` |
+| kprover | 0.1.0, built with `cargo install --path third_party/kit/crates/kprover-cli` (cargo 1.89, 41 s) |
+| Claude Code | 2.1.197, default model `claude-opus-4-8` |
+| Prover | `https://rv-prover.intentcomputing.org`, `evm@4f4c3843076c`, K 7.1.337 |
+| config.toml | `server_url` as above, `task_timeout_seconds=3600`, `max_proof_attempts=10`, `max_validation_attempts=10`, `max_run_attempts=5` |
 
-## Findings to report to Xiaohong (kit)
-1. running-k.md / proving-spec should say explicitly: `kprover validate|prove` block until the task
-   finishes; run them in the foreground, never as a background task. Under Claude Code the Bash tool
-   default timeout (2 min, max 10 min) is shorter than a typical EVM proof, so either the skill must
-   tell the agent to raise BASH_MAX_TIMEOUT_MS or to background-and-wait *inside one turn*.
-2. Non-interactive (`claude -p`) runs end when the agent ends its turn; the kit's "wait for the
-   notification" pattern silently kills the pipeline there. Interactive use is unaffected.
-3. kprover-setup points at kit-plugin release URLs; irrelevant when kprover is already on PATH.
+Runs were non-interactive (`claude -p`) with an explicit tool allowlist, no
+permission bypass, and these two harness settings that interactive users do
+not need: `CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0` and
+`BASH_MAX_TIMEOUT_MS=3600000`. An appended system prompt told the agent to run
+`kprover` in the foreground. The pasted prompt was `PROMPT.md`, unchanged.
 
-  proof-003 proved all 5 claims (698 s exec); prove.sh written. validating-proof started a
-  clean-room session 02ea26ba: validation-001 valid=true; its replay proof submission was refused
-  with HTTP 500 STORAGE_EXHAUSTED ("The configured data directory is full"); the auditor retried
-  (task 8ffdab7e, stuck in queued). The auditor had backgrounded that proof; Claude Code print
-  mode terminated the run at its 600 s background-wait ceiling (21:33Z, rc=0, no PROOF.md).
-  Fix for the harness: CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0 (documented in the termination
-  message). Session will be resumed once the prover has storage again.
-- Attempt 3 resumed (21:40Z, `claude -p --resume d41d9959`, client switched to rv-prover):
-  auditor opened fresh clean-room session 8c86f354 on rv-prover; validation valid; replay proof
-  task a0a462be proved all 5 claims (757 s exec, incl. fresh definition compile on rv-prover);
-  mutation (sender post-balance +1) task db9231b4 notProved / PROOF FAILED (232 s) with a
-  satisfiable residual; audits/proof-audit-1.md VERDICT PASS, Gates A/B/C PASS;
-  PROOF.md first line VALIDATED (assumptions: keccak collision-resistance; ISTANBUL +
-  infinite gas). PROOF.md records the audit as same-agent review because the subagent audit
-  was interrupted by the server incident. Root-level artifacts the agent left in the example
-  dir: SCOPE.md, BYTECODE-ANALYSIS.md, gen_spec.py, gen_verification.py, prove.sh, PROOF.md,
-  audits/{spec-audit-1.md, proof-audit-1.md, _disasm.py, audit_disasm.py, _prove_all.*}.
-  Notable contract finding reproduced: recipient balance silently wraps on overflow (0.4.x,
-  no SafeMath), matching the benchmark's transfer.success.overflow claim.
-  EXAMPLE 1 RESULT: VALIDATED. Wall clock: construction 20:32-21:33Z (61 min incl. the
-  interrupted audit), resumed audit 21:40Z-~22:05Z.
+## Install path (README steps 1 to 4)
 
-## Findings to report to Xiaohong (prover)
-0. PROVER STORAGE FULL (2026-09-15 ~21:30Z): submissions return 500 STORAGE_EXHAUSTED while
-   /healthz still says ok; new tasks (8ffdab7e, ee9d64df) stay queued with startedAt null.
-   Blocks every RV user until the data volume is cleaned or enlarged. /healthz should reflect it.
-   Cause: PROVER_DATA_MAX_SIZE default 20GiB (volume is 100 GB; disk used 24 GB). Each distinct
-   verification.k compiles a multi-GB KEVM definition. Decision (Ovidiu, 2026-09-15): RV uses the
-   separate `rv` environment https://rv-prover.intentcomputing.org (README config.toml sets
-   server_url); PROVER_DATA_MAX_SIZE raised to 80GiB on `rv` only; production left for Xiaohong.
-1. When the verification extension fails to kompile, task 26f7db6b returned
-   error {code: DEFINITION_COMPILATION_FAILED, details: {exitCode: 1, reason: exit_error}},
-   stdout empty, and stderr containing only the pyk Python traceback ending in
-   "kompile ... returned non-zero exit status 113". The K compiler's own [Error] output is not
-   surfaced anywhere, so an agent cannot see what to fix. Suggest capturing kompile's stderr into
-   the task stderr (or error.details). Contrast: when the *spec* fails in the kprove dry run
-   (attempt 3, validation-001: kompile 0, kprove 113, valid=false) the K errors do reach the client
-   ("[Error] Inner Parser: Parse error: unexpected token 'CALLER'" x5) and the agent repaired them.
-   So the gap is only the definition-compile path.
+- Clone with `--recurse-submodules` fetches the private kit submodule once
+  `gh auth setup-git` has run. PASS
+- `cargo install` of the CLI, `kprover config`, `health`, `semantics`,
+  `session start --semantics evm`: all as documented. PASS
+- Final check after publishing: a fresh clone from GitHub into a clean
+  directory reproduced the above. PASS
+
+## Example 1: `transfer` (5 claims), status VALIDATED
+
+Construction session `16dec4d8`, audit session `8c86f354`, all on `rv-prover`
+except where noted.
+
+| Step | Result |
+|---|---|
+| spec + scope | `SCOPE.md`, `BYTECODE-ANALYSIS.md`, `spec.k` (5 claims), `verification.k`, ~10 min |
+| validation 1 | definition compiled; spec parse errors (`unexpected token 'CALLER'` x5) |
+| validation 2 | parse error (`</block>`) |
+| validation 3 | valid |
+| spec audit | `audits/spec-audit-1.md`, VERDICT PASS (inline review) |
+| proof 1 | `--claim transfer-not-payable`, proved, 74 s |
+| proof 2 | insufficient, self, success, overflow, proved, 657 s |
+| proof 3 | full module, no filter, proved, 698 s, recorded in `prove.sh` |
+| audit replay | fresh session, all 5 proved, 757 s (includes a definition compile) |
+| mutation | sender post-balance off by one, `notProved`, 232 s, satisfiable residual |
+| proof audit | `audits/proof-audit-1.md`, VERDICT PASS, Gates A/B/C PASS |
+| PROOF.md | `VALIDATED`; assumptions: keccak collision resistance, ISTANBUL + infinite gas |
+
+Wall clock: construction 61 min (20:32 to 21:33), audit 25 min (21:40 to
+22:04). The construction ran on the shared production instance; the audit
+was interrupted by that instance's storage incident (below) and resumed
+against `rv-prover`, which is why `PROOF.md` records the audit as same-agent
+review. The audit's replay is therefore the theorem's proof on `rv-prover`.
+
+Notable contract fact the run surfaced: the recipient balance silently wraps
+on overflow (Solidity 0.4.x, no SafeMath), proved as a faithful discrepancy
+against EIP-20.
+
+## Example 2: full ERC20 (18 claims), status VALIDATED
+
+Construction session `787a58a8`, audit session `ec1b5850`, both on `rv-prover`.
+
+| Step | Result |
+|---|---|
+| spec + scope | 18 claims derived from source + `eip-20.md`, same coverage as the prover-only reference, ~25 min |
+| validation 1 | `DEFINITION_COMPILATION_FAILED`, no diagnostics; agent guessed a `[symbolic]` attribute issue and restructured (correctly) |
+| validation 2 | 18 parse errors: variable `LOG` collides with the `LOG(N)` opcode |
+| validation 3 | one structural error (unused-variable annotation) |
+| validation 4 | valid |
+| spec audit | not run (see kit findings) |
+| proof 1 | 4-claim probe, one per family, proved, 305 s |
+| proof 2 | all 18 claims, one submission, proved, 1649 s, recorded in `prove.sh` |
+| audit replay | fresh session, 18/18 proved, 1635 s |
+| mutation | `approve-success` with false postcondition, `notProved`, 99 s |
+| proof audit | VERDICT PASS, Gates A/B/C PASS |
+| PROOF.md | `VALIDATED`; single assumption: keccak collision freedom; schedule SHANGHAI |
+
+Wall clock: 1 h 42 min (22:04 to 23:46), unattended.
+
+## Findings for the kit (nlp-research-rosu/kit)
+
+1. `running-k.md` / `proving-spec` should state that `kprover validate|prove`
+   block until the task finishes and must run in the foreground. Under Claude
+   Code, the Bash tool's default timeout (2 min, max 10 min) is shorter than
+   an EVM proof, so the skill should also tell the agent to raise
+   `BASH_MAX_TIMEOUT_MS`. Interactive sessions survive the current behaviour
+   because backgrounded tasks notify on completion; `claude -p` runs do not.
+2. In `claude -p` mode the run terminates 600 s after the agent backgrounds a
+   task and ends its turn ("Background tasks still running after 600s").
+   `CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0` fixes it; worth documenting for
+   anyone scripting the kit.
+3. `kprover-setup` points at kit-plugin release URLs. Harmless when `kprover`
+   is already on `PATH`, misleading otherwise.
+4. Example 2's orchestrator skipped the `auditing-spec` stage entirely
+   (validation, probe, full proof, proof audit). Example 1 did run it.
+5. The `validating-proof` subagent started its clean-room session with the
+   project root inside the shared fetched-sources tree
+   (`~/.config/kprover/semantics/.../evm-semantics`), which the CLI says not
+   to edit. It should pass `--project` explicitly.
+6. A `Bash(mkdir:*)`-style allowlist denies commands prefixed with
+   `VAR=value`; the agent produced one such command. Only matters for
+   scripted runs.
+
+## Findings for Prover
+
+1. Storage: the shared production instance returned HTTP 500
+   `STORAGE_EXHAUSTED` ("The configured data directory is full") at ~21:30Z
+   while `/healthz` kept reporting `ok`, and new tasks sat in `queued`. Cause:
+   `PROVER_DATA_MAX_SIZE` default 20 GiB on a 100 GB volume (24 GB used);
+   every distinct `verification.k` compiles a multi-gigabyte KEVM definition.
+   Decision: RV uses the separate `rv` environment; `PROVER_DATA_MAX_SIZE`
+   raised to 80 GiB there only (redeployed 21:40Z). Production is untouched
+   and still needs the same change. `/healthz` should reflect storage
+   pressure.
+2. When the verification extension fails to kompile, the task returns
+   `DEFINITION_COMPILATION_FAILED` with an exit code, empty stdout, and a
+   stderr holding only the pyk Python traceback. K's own `[Error]` output is
+   not surfaced, so the agent cannot see what to fix (it had to guess in
+   example 2). Spec-level errors from the `kprove` dry run do come through.
+3. The `rv` environment has no `PROVER_PROOF_TIMEOUT` set (default 30 min).
+   The 18-claim single submission finished in 27.5 min; larger specs will hit
+   it. Production sets the variable explicitly.
+
+## Evidence
+
+`examples/<n>/reference/evidence/` on this branch holds every `result.json`
+the CLI retained (task IDs, status, outcome, timing, inline stdout/stderr)
+plus the global `session.json` descriptors. Prover task IDs:
+
+| Example | Task | Kind |
+|---|---|---|
+| 1 | `df359f8d`, `a229cfab`, `ed85c28c` | construction proofs 1 to 3 |
+| 1 | `a0a462be` | audit replay |
+| 1 | `db9231b4` | mutation |
+| 2 | `5887760b`, `5dc0cde0` | probe, full proof |
+| 2 | `46f4cc81` | audit replay |
+| 2 | `0234c459` | mutation |

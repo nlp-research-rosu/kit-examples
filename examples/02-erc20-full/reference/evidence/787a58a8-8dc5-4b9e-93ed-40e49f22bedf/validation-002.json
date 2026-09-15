@@ -1,0 +1,44 @@
+{
+  "stderr": "[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(35,21,35,24)\n\t35 |\t              <log> LOG => LOG ListItem(#abiEventLog(ACCT_ID, \"Approval\",\n#indexed(#address(CALLER_ID)), #indexed(#address(SPENDER)), #uint256(VALUE)))\n</log>\n\t   .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(88,21,88,24)\n\t88 |\t              <log> LOG </log>\n\t   .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(141,21,141,24)\n\t141 |\t              <log> LOG => LOG ListItem(#abiEventLog(ACCT_ID,\n\"Transfer\", #indexed(#address(CALLER_ID)), #indexed(#address(TO)),\n#uint256(VALUE))) </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(194,21,194,24)\n\t194 |\t              <log> LOG => LOG ListItem(#abiEventLog(ACCT_ID,\n\"Transfer\", #indexed(#address(CALLER_ID)), #indexed(#address(CALLER_ID)),\n#uint256(VALUE))) </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(247,21,247,24)\n\t247 |\t              <log> LOG => LOG ListItem(#abiEventLog(ACCT_ID,\n\"Transfer\", #indexed(#address(CALLER_ID)), #indexed(#address(TO)),\n#uint256(VALUE))) </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(300,21,300,24)\n\t300 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(353,21,353,24)\n\t353 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(406,21,406,24)\n\t406 |\t              <log> LOG => LOG ListItem(#abiEventLog(ACCT_ID,\n\"Transfer\", #indexed(#address(FROM)), #indexed(#address(TO)), #uint256(VALUE)))\n</log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(459,21,459,24)\n\t459 |\t              <log> LOG => LOG ListItem(#abiEventLog(ACCT_ID,\n\"Transfer\", #indexed(#address(FROM)), #indexed(#address(FROM)),\n#uint256(VALUE))) </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(512,21,512,24)\n\t512 |\t              <log> LOG => LOG ListItem(#abiEventLog(ACCT_ID,\n\"Transfer\", #indexed(#address(FROM)), #indexed(#address(TO)), #uint256(VALUE)))\n</log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(565,21,565,24)\n\t565 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(618,21,618,24)\n\t618 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(671,21,671,24)\n\t671 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(724,21,724,24)\n\t724 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(777,21,777,24)\n\t777 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(830,21,830,24)\n\t830 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(883,21,883,24)\n\t883 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Inner Parser: Parse error: unexpected token 'LOG' following token\n'<log>'.\n\tSource(/data/tasks/0be223f9-3c96-4c23-9e3c-9c8067720842/input/spec.k)\n\tLocation(936,21,936,24)\n\t936 |\t              <log> LOG </log>\n\t    .\t                    ^~~\n[Error] Compiler: Had 18 parsing errors.\n",
+  "stdout": "",
+  "task": {
+    "createdAt": "2026-09-15T22:23:48.709318Z",
+    "error": null,
+    "finishedAt": "2026-09-15T22:24:47.599158Z",
+    "id": "0be223f9-3c96-4c23-9e3c-9c8067720842",
+    "kind": "proofDryRun",
+    "result": {
+      "definitionId": "7_1_337-haskell-evm-4f4c3843076c-bedddccf7c5b2d6a5a519595433473c3cba9f6e498772967529a4019c608adfb",
+      "valid": false
+    },
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "startedAt": "2026-09-15T22:23:49.399320Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 58199,
+      "queueMilliseconds": 690,
+      "totalMilliseconds": 58889
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 49910,
+        "exitCode": 0,
+        "finishedAt": "2026-09-15T22:24:40.121780Z",
+        "outcome": "success",
+        "startedAt": "2026-09-15T22:23:50.210801Z",
+        "tool": "kompile"
+      },
+      {
+        "durationMilliseconds": 6687,
+        "exitCode": 113,
+        "finishedAt": "2026-09-15T22:24:47.169468Z",
+        "outcome": "exit_error",
+        "startedAt": "2026-09-15T22:24:40.481510Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}
