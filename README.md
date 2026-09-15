@@ -45,18 +45,23 @@ kprover --version && kprover health && kprover semantics
 It is not K's `kprove`. `kprover semantics` must list `evm`; that is the
 semantics both examples use.
 
-## Configure budgets (required)
+## Configure the endpoint and budgets (required)
 
 Write `~/.config/kprover/config.toml`:
 
 ```toml
+server_url = "https://rv-prover.intentcomputing.org"
 task_timeout_seconds = 3600
 max_proof_attempts = 10
 max_validation_attempts = 10
 max_run_attempts = 5
 ```
 
-The stock defaults are 600 seconds and 3 attempts per session. They are too
+`server_url` selects the Prover instance reserved for you. The CLI's built-in
+default is a different, shared instance; `kprover config` shows which one is in
+effect.
+
+The stock budget defaults are 600 seconds and 3 attempts per session. They are too
 small for EVM: the first submission in a session compiles the verification
 extension (roughly 11 minutes) before proving starts, individual ERC20 claims
 take 3 to 17 minutes to close, and KIT's audit stage spends at least two more
