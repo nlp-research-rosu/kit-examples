@@ -119,11 +119,21 @@ claude --plugin-dir ../../third_party/kit
 ```
 
 Paste `PROMPT.md`. Same pipeline, broader theorem: KIT decides which claims
-each external function needs. Our verified reference run reached 18 claims
-across `balanceOf`, `allowance`, `approve`, `transfer`, `transferFrom`, and
-the dispatcher. Expect several hours; the session keeps running while you do
-other things, and every accepted submission is retained under
-`.kprover/sessions/<id>/`.
+each external function needs. In our reference run it derived 18 claims from
+the source and `eip-20.md` alone (five each for `transfer` and
+`transferFrom`, two each for `approve`, `balanceOf`, and `allowance`, two for
+the dispatcher), the same coverage as the independently written 18-claim
+solution on the `reference` branch.
+
+Timings from that run: spec and scope in about 25 minutes; four validation
+round trips (the first failed to compile the definition, the next two were
+parse errors the server reported precisely); a 4-claim probe in 5 minutes;
+then all 18 claims proved in one 27-minute submission recorded in
+`prove.sh`; then the clean-room audit replay, another 27 minutes, plus the
+mutation probe. About two hours unattended, ending in a `PROOF.md` whose
+first line is `VALIDATED`, conditional on one recorded assumption (keccak
+collision freedom). The session keeps running while you do other things, and
+every accepted submission is retained under `.kprover/sessions/<id>/`.
 
 ## Compare with the reference run
 
