@@ -1,0 +1,19 @@
+# kprover session workspaces (inputs, evidence, audits) live here on main;
+# the reference branch commits curated copies under examples/*/reference/
+.kprover/
+
+# Agent host scratch
+.claude/
+.agents/
+.codex/
+
+# Logs and transcripts
+*.log
+*.jsonl
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
