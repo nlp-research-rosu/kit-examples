@@ -77,7 +77,7 @@ Construction session `787a58a8`, audit session `ec1b5850`, both on `rv-prover`.
 | proof audit | VERDICT PASS, Gates A/B/C PASS |
 | PROOF.md | `VALIDATED`; single assumption: keccak collision freedom; schedule SHANGHAI |
 
-Wall clock: 1 h 42 min (22:04 to 23:46), unattended.
+Wall clock: 1 h 35 min (22:04 to 23:39), unattended.
 
 ## Findings for the kit (nlp-research-rosu/kit)
 
