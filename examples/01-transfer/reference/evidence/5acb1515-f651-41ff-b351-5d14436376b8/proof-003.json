@@ -1,0 +1,33 @@
+{
+  "stderr": "Log unavailable: Prover returned HTTP 502 Bad Gateway: error code: 502\n\n",
+  "stdout": "Log unavailable: error sending request for url (https://rv-prover.intentcomputing.org/tasks/e710295f-04d6-4d16-a763-c70b6eb593e9/stdout)\n",
+  "task": {
+    "createdAt": "2026-09-16T09:44:17.334444Z",
+    "error": null,
+    "finishedAt": null,
+    "id": "e710295f-04d6-4d16-a763-c70b6eb593e9",
+    "kind": "proof",
+    "result": null,
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "startedAt": "2026-09-16T09:44:18.147174Z",
+    "status": "running",
+    "timing": {
+      "executionMilliseconds": 0,
+      "queueMilliseconds": 812,
+      "totalMilliseconds": 0
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": null,
+        "exitCode": null,
+        "finishedAt": null,
+        "outcome": "running",
+        "startedAt": "2026-09-16T09:44:18.644858Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

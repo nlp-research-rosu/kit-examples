@@ -1,0 +1,41 @@
+{
+  "stderr": "Traceback (most recent call last):\n  File \"/opt/kevm/bin/kevm\", line 8, in <module>\n    sys.exit(main())\n  File \"/opt/kevm/lib/python3.10/site-packages/kevm_pyk/__main__.py\", line 110, in main\n    execute(options)\n  File \"/opt/kevm/lib/python3.10/site-packages/kevm_pyk/__main__.py\", line 132, in exec_kompile_spec\n    kevm_kompile(\n  File \"/opt/kevm/lib/python3.10/site-packages/kevm_pyk/kompile.py\", line 70, in kevm_kompile\n    return run_kompile(\n  File \"/opt/kevm/lib/python3.10/site-packages/kevm_pyk/kompile.py\", line 218, in run_kompile\n    [future.result() for future in futures]\n  File \"/opt/kevm/lib/python3.10/site-packages/kevm_pyk/kompile.py\", line 218, in <listcomp>\n    [future.result() for future in futures]\n  File \"/usr/lib/python3.10/concurrent/futures/_base.py\", line 458, in result\n    return self.__get_result()\n  File \"/usr/lib/python3.10/concurrent/futures/_base.py\", line 403, in __get_result\n    raise self._exception\n  File \"/usr/lib/python3.10/concurrent/futures/thread.py\", line 58, in run\n    result = self.fn(*self.args, **self.kwargs)\n  File \"/opt/kevm/lib/python3.10/site-packages/kevm_pyk/kompile.py\", line 196, in _kompile_llvm\n    kompile_llvm(\n  File \"/opt/kevm/lib/python3.10/site-packages/pyk/ktool/kompile.py\", line 335, in __call__\n    proc_res = run_process_2(\n  File \"/opt/kevm/lib/python3.10/site-packages/pyk/utils.py\", line 527, in run_process_2\n    res.check_returncode()\n  File \"/usr/lib/python3.10/subprocess.py\", line 457, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command '('kompile', '/data/definitions/.7_1_337-haskell-evm-4f4c3843076c-bb3d54d023b0641e0af4e872461438f63354cfc6715328a0bada9c16c9331944.542ab17a-f50a-48ac-8bd3-e5f9b569f78a/source/verification.k', '--main-module', 'VERIFICATION', '--syntax-module', 'VERIFICATION', '-I', '/data/definitions/.7_1_337-haskell-evm-4f4c3843076c-bb3d54d023b0641e0af4e872461438f63354cfc6715328a0bada9c16c9331944.542ab17a-f50a-48ac-8bd3-e5f9b569f78a/source', '-I', '/opt/kevm/lib/python3.10/site-packages/kevm_pyk/kproj/evm-semantics', '-I', '/opt/kevm/lib/python3.10/site-packages/kevm_pyk/kproj/plugin', '--md-selector', 'k & ! symbolic', '--hook-namespaces', 'JSON KRYPTO', '--emit-json', '--backend', 'llvm', '--llvm-kompile-type', 'c', '-ccopt', '-std=c++20', '-ccopt', '-lssl', '-ccopt', '-lcrypto', '-ccopt', '-lsecp256k1', '-ccopt', '/opt/kevm/kdist/evm-semantics/plugin/krypto.a', '-ccopt', '-Wno-deprecated-declarations', '--output-definition', '/data/definitions/.7_1_337-haskell-evm-4f4c3843076c-bb3d54d023b0641e0af4e872461438f63354cfc6715328a0bada9c16c9331944.542ab17a-f50a-48ac-8bd3-e5f9b569f78a/definition/llvm-library', '--type-inference-mode', 'simplesub')' returned non-zero exit status 113.\n",
+  "stdout": "",
+  "task": {
+    "createdAt": "2026-09-16T09:25:35.385069Z",
+    "error": {
+      "code": "DEFINITION_COMPILATION_FAILED",
+      "details": {
+        "definitionId": "7_1_337-haskell-evm-4f4c3843076c-bb3d54d023b0641e0af4e872461438f63354cfc6715328a0bada9c16c9331944",
+        "exitCode": 1,
+        "reason": "exit_error"
+      },
+      "message": "The definition could not be compiled."
+    },
+    "finishedAt": "2026-09-16T09:26:15.526451Z",
+    "id": "e538a34c-9f9f-4f6e-8dcc-900f0e00f45f",
+    "kind": "proofDryRun",
+    "result": null,
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "startedAt": "2026-09-16T09:25:36.327974Z",
+    "status": "failed",
+    "timing": {
+      "executionMilliseconds": 39198,
+      "queueMilliseconds": 942,
+      "totalMilliseconds": 40141
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 37930,
+        "exitCode": 1,
+        "finishedAt": "2026-09-16T09:26:15.086682Z",
+        "outcome": "exit_error",
+        "startedAt": "2026-09-16T09:25:37.155749Z",
+        "tool": "kompile"
+      }
+    ]
+  }
+}

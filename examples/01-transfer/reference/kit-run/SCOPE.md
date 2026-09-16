@@ -1,79 +1,88 @@
-# SCOPE.md — StandardToken.transfer bytecode verification
+# SCOPE — `transfer(address,uint256)` of StandardToken (EVM bytecode)
 
-## Semantics
-- Session `16dec4d8-3461-45d9-8112-23f9a0ec6c5b`, pinned `evm` @ `4f4c3843076c`
-  (KEVM, K 7.1.337). Claims compile against `edsl.md` + `lemmas/lemmas.k`.
+- **Semantics:** `evm` (KEVM), server ID `evm`, commit `4f4c3843076c`.
+- **Session:** `5acb1515-f651-41ff-b351-5d14436376b8`.
+- **Code under proof:** the runtime bytecode in
+  `contract/StandardToken.inlined.bytes`, embedded verbatim as
+  `StandardTokenRuntime` in `inputs/verification.k` and executed from
+  `<program>`/`<code>` at `<pc> 0` with `#execute`. Claims are therefore against
+  the deployed bytecode, not the source.
+- **Source of record:** `contract/StandardToken.inlined.sol`, function
+  `transfer` (selector `a9059cbb`).
 
 ## Program boundary
-- Target: the runtime bytecode `contract/StandardToken.inlined.bytes` (2091 bytes),
-  entered at `#execute` with `<pc> 0`, empty stack/memory, running to `#halt`.
-- Entry computation covered: the full external call to selector
-  `0xa9059cbb` = `transfer(address,uint256)` (dispatch at pc `0x58` → body at `0x192`),
-  including the internal transfer logic at `0x60f`, the ABI return encoder at `0x1d2`,
-  and the `LOG3` event emission. No other function selector is claimed.
-- The claims fix `<program>`/`<code>` to this exact bytecode via the
-  `StandardTokenCode` macro and `<jumpDests>` via `#computeValidJumpDests`.
+
+Each claim starts a fresh call frame at `#execute` with the full runtime
+bytecode and `<callData> = #abiCallData("transfer", #address(TO), #uint256(VALUE))`.
+Execution runs the real function dispatcher (including the non-payable
+`CALLVALUE ISZERO` guard) through to `#halt`. No external call, `transferFrom`,
+`approve`, or constructor code is exercised.
+
+## Storage layout (read from source + bytecode)
+
+- `balances` is state-variable slot **1** (`totalSupply` is slot 0, `allowed`
+  slot 2). Confirmed by the bytecode's `600160..SLOAD` mapping accesses.
+- `balances[A]` lives at `#hashedLocation("Solidity", 1, A)` = `keccak(A ‖ 1)`.
 
 ## Input domain
-- `CALLER` (`msg.sender`), `TO` (the `_to` argument), `VALUE` (`_value`): all
-  `#rangeAddress`/`#rangeUInt(256,·)` as appropriate. `<callData>` is the canonical
-  `#abiCallData("transfer", #address(TO), #uint256(VALUE))` (well-formed ABI call).
-- Contract account: `ACCTID` an address, `ACCTBAL` a uint256, `ACCTNONCE` a nonce,
-  `CALLDEPTH` in `[0,1024)`.
-- `balances[k]` lives at storage slot 1: `#hashedLocation("Solidity", 1, k)`
-  (Solidity inheritance order — totalSupply=0, balances=1, allowed=2; confirmed in
-  the bytecode key computation). `BAL_FROM = balances[CALLER]`, `BAL_TO = balances[TO]`.
-- The five claims partition the behaviour by guard:
-  1. `transfer-success`: `CALLER≠TO`, `VALUE>0`, `BAL_FROM≥VALUE`, `BAL_TO+VALUE<2^256`.
-  2. `transfer-self`: `TO==CALLER`, `VALUE>0`, `BAL_FROM≥VALUE`.
-  3. `transfer-insufficient`: `BAL_FROM<VALUE` (forces the `else` branch).
-  4. `transfer-not-payable`: `CALLVALUE>0` (any calldata).
-  5. `transfer-overflow`: `CALLER≠TO`, `VALUE>0`, `BAL_FROM≥VALUE`, `BAL_TO+VALUE≥2^256`.
-- Excluded (not the target theorem): calls to other selectors; malformed/short
-  calldata; `VALUE==0 ∧ BAL_FROM≥0` boundary of the else-branch is folded into
-  claim 3 only via `BAL_FROM<VALUE` (the task's "insufficient balance" reading).
 
-## Observable final state
-- `<statusCode>`: `EVMC_SUCCESS` (claims 1,2,3,5) or `EVMC_REVERT` (claim 4).
-- `<output>`: `#buf(32,1)` (success/self/overflow), `#buf(32,0)` (insufficient),
-  `.Bytes` (not-payable revert).
-- `<storage>` of the contract account: the balances-slot entries, shown changing
-  (claims 1,5), unchanged (claims 2,3), or fully symbolic-unchanged (claim 4).
-- `<log>`: exactly one appended `Transfer` entry
-  `{ ACCTID | [topic0, CALLER, TO] | #buf(32,VALUE) }` (claims 1,2,5), where
-  `topic0 = TransferTopic0 = keccak256("Transfer(address,address,uint256)")`;
-  log unchanged (claims 3,4).
+- `#rangeAddress(ACCTID/CALLER/TO)`, `#rangeUInt(256, VALUE)`; `CALLER` is
+  `msg.sender` (the `<caller>` cell), `ACCTID` is the executing token contract.
+- Symbolic storage map `ACCT_STORAGE`; balances read with `#lookup`.
+- Success/self/overflow: `VALUE > 0` and `balances[CALLER] >= VALUE` (the exact
+  guard `balances[msg.sender] >= value && value > 0`).
+- Distinct-account cases additionally require `CALLER =/= TO` **and** the two
+  storage slots distinct — see *Trust assumption* below.
 
-## Intended property
-`transfer` moves `VALUE` tokens from `msg.sender` to `_to` and returns `true`
-when the sender can cover a positive `VALUE`; returns `false` without side effects
-when the sender's balance is insufficient; reverts if ETH is attached; and — because
-this 0.4.x contract has no SafeMath — silently wraps the recipient balance on
-overflow rather than reverting. Self-transfer is a no-op on balances.
+## Observable final state (per claim)
 
-## Chosen contract readings (underdetermined points)
-- **Failure = return false, not revert.** The source's `else` returns `false`; the
-  bytecode false branch (`0x76d`) does a normal `RETURN` of `#buf(32,0)`. Claim 3
-  asserts `EVMC_SUCCESS` + `#buf(32,0)`, not a revert.
-- **`value > 0` is required for success.** The source guard is
-  `balances[msg.sender] >= value && value > 0`; a zero-value transfer takes the
-  else branch. Success claims therefore require `VALUE > 0`.
-- **Recipient overflow silently wraps.** No overflow check exists; claim 5 states
-  the wrapped result `chop(BAL_TO+VALUE) = BAL_TO+VALUE-2^256` and still `SUCCESS`.
-  This is faithful to the bytecode, and documents a real defect vs. the EIP-20 intent.
-- **Success claim assumes distinct sender/recipient and no overflow**; self-transfer
-  and overflow are stated as separate claims so each net storage effect is exact.
+`<statusCode>`, `<output>`, the token account's `<storage>`, and `<log>`. Frame
+cells outside the property (`<wordStack>`, `<localMem>`, `<pc>`, `<gas>`,
+`<memoryUsed>`, `<refund>`, `<origStorage>`, touched/accessed sets) are left
+unconstrained on the RHS (`?_`); they are execution scratch, not part of the
+ERC20 behaviour being asserted.
 
-## Trust / modelling assumptions (recorded for the trust ledger)
-- **keccak collision-resistance.** Claims 1 and 5 include the precondition
-  `#hashedLocation("Solidity",1,CALLER) =/=Int #hashedLocation("Solidity",1,TO)`
-  alongside `CALLER =/=Int TO`. Distinct storage slots for distinct addresses is
-  implied by injectivity of keccak on the 64-byte pre-images `k ++ slot`; KEVM
-  models keccak as an uninterpreted total function, so this fact is supplied as a
-  precondition rather than derived. This is the standard, universally-accepted EVM
-  storage-aliasing assumption.
-- **Environment:** `<schedule> ISTANBUL`, `<useGas> true` with infinite gas
-  (`#gas(_VGAS)`), non-static call. All opcodes used by `transfer` (SHA3, SLOAD,
-  SSTORE, LOG3, REVERT, RETURN) exist under ISTANBUL. Infinite gas isolates
-  functional correctness from gas exhaustion; a finite-gas theorem would be
-  strictly about gas and is out of scope.
+## Intended property and chosen contract readings
+
+The five claims (labels in `spec.k`):
+
+1. **`transfer-success`** (`CALLER =/= TO`): balances[CALLER] −= VALUE,
+   balances[TO] += VALUE, output ABI-`true` (`#buf(32,1)`), status
+   `EVMC_SUCCESS`, one `Transfer(CALLER,TO,VALUE)` log appended. Requires no
+   recipient overflow (`balances[TO] + VALUE < 2^256`).
+2. **`transfer-self`** (`CALLER == TO`): net storage unchanged
+   (`balances[CALLER]` stays its original value), output `true`, `Transfer`
+   emitted. Captures the read-modify-write ordering (`-= VALUE` then `+= VALUE`
+   on the same slot).
+3. **`transfer-insufficient`** (`balances[CALLER] < VALUE`): the source's `else`
+   branch. **Reading:** the contract **returns `false`, it does not revert** —
+   status `EVMC_SUCCESS`, output `#buf(32,0)`, storage and log unchanged. (This
+   deviates from EIP-20's SHOULD-`throw`; we prove what the code does.)
+4. **`transfer-not-payable`** (`CALLVALUE > 0`): the per-function
+   `CALLVALUE ISZERO … REVERT` guard fires — status `EVMC_REVERT`, empty output,
+   storage and log unchanged.
+5. **`transfer-overflow`** (`CALLER =/= TO`, `balances[TO] + VALUE >= 2^256`):
+   0.4.x has no SafeMath; `balances[TO]` wraps to `chop(balances[TO] + VALUE)`
+   (i.e. `balances[TO] + VALUE − 2^256` under the precondition, since both
+   summands are `< 2^256`) and the call still **succeeds** (output `true`,
+   `Transfer` emitted, balances[CALLER] −= VALUE). `chop` is KEVM's mod-2^256
+   reduction — the exact effect of the unchecked `ADD`. Documents the
+   unchecked-arithmetic edge case.
+
+Other contract readings resolved:
+- `value == 0` returns `false` (guard is `value > 0`); not a required claim, but
+  note it means `transfer-insufficient`'s `balances[CALLER] < VALUE` already
+  implies `VALUE > 0`, so that branch is reached cleanly.
+- Return type is `bool`; ABI-encoded in a full 32-byte word.
+
+## Trust assumption (recorded for the proof audit)
+
+The distinct-account claims (`transfer-success`, `transfer-overflow`) include
+the precondition
+`#hashedLocation("Solidity",1,CALLER) =/=Int #hashedLocation("Solidity",1,TO)`.
+KEVM models `keccak` as an uninterpreted SMT function with no injectivity
+axiom, so `CALLER =/= TO` alone does not entail slot distinctness. This
+precondition is the standard **keccak collision-resistance** assumption for
+storage-mapping reasoning; it restricts the theorem to non-colliding slots and
+is listed as an assumption, not proved. The self-transfer and failure claims do
+not depend on it.

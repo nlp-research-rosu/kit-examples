@@ -3,14 +3,15 @@
 One JSON event per line: the system init (tools, model, loaded skills), every
 assistant message, every tool call with its input, every tool result, and a
 final `result` event with turn count, duration, and cost. Read with `jq` or
-any JSONL viewer.
+any JSONL viewer. The pasted prompt is `../../PROMPT.md`, unchanged.
 
 | File | What it is |
 |---|---|
-| `attempt1-aborted-sighup.jsonl` | 20 s; the launcher shell closed and took the agent with it. Harness error. |
-| `attempt2-orphaned-validation.jsonl` | 18 min; spec written, `kprover validate` backgrounded, run ended at the print-mode wait ceiling. |
-| `attempt3-construction.jsonl` | 61 min; the run that produced `kit-run/`: spec, validations, three proofs, `prove.sh`, first audit attempt (interrupted by the Prover storage incident). |
-| `attempt3-resumed-audit.jsonl` | 23 min; `claude -p --resume` continuation that redid the audit on rv-prover and wrote `PROOF.md`. |
-| `run-example.sh` | The exact non-interactive launcher used (tool allowlist, env, appended harness notes). |
+| `v0.1.1-run.jsonl` | The reference run: KIT from `kit@kit-plugin` v0.1.1, 64 min, produced `../kit-run/`. |
+| `run-example.sh` | The non-interactive launcher used for it (tool allowlist, env, appended harness notes; no `--plugin-dir`). |
+| `attempt3-construction.jsonl` | Earlier `b3dee27` run, 61 min: spec, validations, three proofs, first audit attempt (interrupted). Produced `../kit-run-b3dee27/`. |
+| `attempt3-resumed-audit.jsonl` | `claude -p --resume` continuation that redid that audit on rv-prover. |
+| `attempt2-orphaned-validation.jsonl` | 18 min; `kprover validate` backgrounded, run ended at the print-mode wait ceiling. |
+| `attempt1-aborted-sighup.jsonl` | 20 s; launcher shell closed. Harness error. |
 
-The pasted prompt is `../../PROMPT.md`, unchanged. See `/RUN-NOTES.md` for the timeline.
+See `/RUN-NOTES.md` for the timelines.

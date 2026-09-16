@@ -1,120 +1,218 @@
-# Proof audit 1 — StandardToken.transfer
+# Proof audit 1 — `transfer(address,uint256)` of StandardToken (EVM bytecode)
 
-Reviewer: same-agent review (inline fallback — the dispatched fresh-subagent audit
-was interrupted by a server `STORAGE_EXHAUSTED` incident and its process was lost;
-per `using-kit` the inline fallback re-checks strictly from the on-disk artifacts,
-with a fresh clean-room session, replay, and a self-authored non-vacuity probe).
-Construction reports were not used as evidence; the bytecode was re-disassembled
-independently and constants re-derived.
+**Mode:** independent clean-room proof audit (validating-proof skill). The
+on-disk candidate proof is untrusted evidence; no constructor report was read.
+Fresh audit session started; construction session `5acb1515-…` and its task IDs
+were NOT reused. Construction inputs left unmodified.
 
-## Sessions / server
-- Construction session: `16dec4d8-3461-45d9-8112-23f9a0ec6c5b` (final proof `proof-003`, task `ed85c28c-e50d-4e3e-bd84-795136824ff1`, outcome `proved`).
-- Clean-room AUDIT session: `8c86f354-0787-41a2-95ad-2d4e99c098d3`, `kprover session start --semantics evm` → pinned `evm@4f4c3843076c` (matches construction).
-- Server `https://rv-prover.intentcomputing.org`, `kprover health` = ok, K 7.1.337. (The prior interrupted attempt used session `02ea26ba…` on a different instance; abandoned, not reused.)
+## Audit session and semantics confirmation
+
+- **Audit session:** `65dd4426-936e-4f21-adc2-4680c4b98d2f`
+  (`kprover session start --project …/01-transfer --semantics evm`).
+- **Semantics pin (independently confirmed):** `evm`,
+  repo `https://github.com/nlp-research-rosu/semantics-evm`, commit
+  `4f4c3843076c` — matches `kprover semantics` server listing and SCOPE.md
+  (`evm` / `4f4c3843076c`). `kprover health` → `{"status":"ok","kVersion":"7.1.337"}`.
+- Definition id used by every task: `7_1_337-haskell-evm-4f4c3843076c-…`.
 
 ## Artifacts examined
-- `inputs/spec.k` (module SPEC, 5 claims), `inputs/verification.k` (VERIFICATION-SUMMARIES + VERIFICATION) — copied verbatim into the audit session (sha256 identical to construction copies).
-- `SCOPE.md`, `prove.sh`, `audits/spec-audit-1.md`.
-- Original inputs: `contract/StandardToken.inlined.bytes`, `contract/StandardToken.inlined.sol`, `eip-20.md`.
 
-## Independent structural verification (own disassembler, `audit_disasm.py`)
-- Dispatcher: `PUSH4 0xa9059cbb` at pc `0x58` → `PUSH2 0x0192; JUMPI` — transfer selector routes to `0x192`. ✓
-- Non-payable guard at `0x193`: `CALLVALUE; ISZERO; PUSH 0x19d; JUMPI`, else `PUSH 0 DUP1 REVERT` (`0x199`–`0x19c`). ✓
-- Balances slot: key computation at `0x60f` uses `PUSH1 0x01` (slot 1) then `mstore(key); mstore(0x01); sha3` → `balances[·]` at `#hashedLocation("Solidity",1,·)`. ✓
-- Guard: `SLOAD balances[sender]; LT; ISZERO; … GT (value>0)`; combined `ISZERO; PUSH 0x76d; JUMPI` → false branch at `0x76d`. ✓
-- False branch `0x76d`: `PUSH 0; SWAP1; POP; …; JUMP` — returns 0, **no REVERT**. ✓
-- Recipient update `0x6f7`: `SLOAD; ADD; …; SSTORE` — **plain ADD, no overflow guard**. ✓
+- `.kprover/sessions/5acb1515-…/inputs/spec.k` (module `TRANSFER-SPEC`, 5 claims)
+- `.kprover/sessions/5acb1515-…/inputs/verification.k`
+  (`VERIFICATION-SUMMARIES` + `VERIFICATION`)
+- `SCOPE.md`, `prove.sh`, `audits/spec-audit-1.md`
+- `contract/StandardToken.inlined.sol`, `contract/StandardToken.inlined.bytes`,
+  `eip-20.md`
+- Pinned semantics sources (`kprover semantics fetch evm`):
+  `edsl.md`, `lemmas/lemmas.k`, `abi.md`, `evm.md`, `hashed-locations.md`.
 
-## Constant / macro checks (exact, against the source)
-- `StandardTokenCode` `#parseByteStack("0x…")` == `StandardToken.inlined.bytes` **byte-for-byte** (4184 chars, string compare equal).
-- `TransferTopic0 = 100389287136786176327247604509743168900146139575972864366142685224231313322991` = `0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef` = the `PUSH32` at pc `0x72e`, present in the bytecode. ✓
+Audit inputs were copied into
+`.kprover/sessions/65dd4426-…/inputs/{spec.k,verification.k}` and verified
+byte-identical (sha256) to the construction originals. `verification.k` embeds
+the bytecode; no extra source files are required.
 
-## Clean-room replay (positive claims)
-Command:
+## Commands run (every command, exit status, task ID)
+
+| # | Command (abbrev.) | Task ID | Exit | Result |
+|---|---|---|---|---|
+| 1 | `kprover session start --project …/01-transfer --semantics evm` | — | 0 | session `65dd4426-…`, pin `evm@4f4c3843076c` |
+| 2 | `kprover session show 65dd4426-…` | — | 0 | pin confirmed `evm@4f4c3843076c` |
+| 3 | `kprover semantics` | — | 0 | `evm` pinned server-side at `4f4c3843076c` |
+| 4 | `kprover health` | — | 0 | `status ok`, kVersion 7.1.337 |
+| 5 | `kprover semantics fetch evm` | — | 0 | sources at `…/semantics-evm/4f4c3843076c` |
+| 6 | `kprover validate --session 65dd4426-… --spec inputs/spec.k --spec-module TRANSFER-SPEC --verification inputs/verification.k --verification-module VERIFICATION` | `9ef4b97b-ab29-42c9-8a8e-fb37cfcb12c1` | 0 | `valid: true` (validation-001) |
+| 7 | `kprover prove --session 65dd4426-… --spec inputs/spec.k --spec-module TRANSFER-SPEC --verification inputs/verification.k --verification-module VERIFICATION` | `976eaa90-cdd6-43f3-84ef-a3694a8f05dd` | 0 | `outcome: proved`, residual null, 5/5 PASSED (proof-001) |
+| 8 | `kprover prove --session 65dd4426-… --spec inputs/spec_mut.k --spec-module MUTANT --verification inputs/verification.k --verification-module VERIFICATION` | `830f41d8-6b96-456c-9248-b274327f7c36` | 1 | `outcome: notProved`, 1 failing node (proof-002) — A5 mutation |
+
+### Positive run raw result (proof-001/result.json, stdout)
+
 ```
-kprover prove --session 8c86f354-0787-41a2-95ad-2d4e99c098d3 \
-  --spec inputs/spec.k --spec-module SPEC \
-  --verification inputs/verification.k --verification-module VERIFICATION
+PROOF PASSED: TRANSFER-SPEC.transfer-overflow
+PROOF PASSED: TRANSFER-SPEC.transfer-self
+PROOF PASSED: TRANSFER-SPEC.transfer-success
+PROOF PASSED: TRANSFER-SPEC.transfer-not-payable
+PROOF PASSED: TRANSFER-SPEC.transfer-insufficient
 ```
-Result: task `a0a462be-04c2-4730-90c5-37e199ec06e4`, status `completed`, outcome `proved`,
-residual null, tool exit `[0,0]`, execution 756.9 s. stdout:
-```
-PROOF PASSED: SPEC.transfer-overflow
-PROOF PASSED: SPEC.transfer-self
-PROOF PASSED: SPEC.transfer-success
-PROOF PASSED: SPEC.transfer-not-payable
-PROOF PASSED: SPEC.transfer-insufficient
-```
-All five closed to `#Top` in my own session. Evidence: `.kprover/sessions/8c86f354…/proof-001/`.
+`result.outcome = "proved"`, `residual = null`, kprove `exitCode 0`. All five
+claims (`transfer-success`, `transfer-self`, `transfer-insufficient`,
+`transfer-not-payable`, `transfer-overflow`) close in my own clean-room session
+with the exact `prove.sh` invocation (all five together, no depth bound).
 
-## Proof-extension inventory (rebuilt from files)
-`verification.k` adds **no** simplification rules, operational bridges, result-bearing
-oracles, priority rules, or auxiliary claims. The VERIFICATION module's extension
-section is empty; it only `imports EDSL`, `LEMMAS`, `EVM` (all bundled semantics).
-The only additions are two **definitional constants** in VERIFICATION-SUMMARIES:
-- `StandardTokenCode` (macro → the verified bytecode) — the program text the claims execute; not an execution-bypassing rule. Class: definitional/constant.
-- `TransferTopic0` (macro → the verified event-sig integer) — a public constant. Class: definitional/constant.
-No extension edits VERIFICATION-SUMMARIES post-spec-audit beyond these approved constants. The proof therefore closes essentially under the bundled semantics alone.
+## Proof-extension inventory (rebuilt from files, not from construction record)
 
-## Gate A — real-program soundness
-- **A1 bodies execute:** the entry claims run `#execute` over `StandardTokenCode` (the exact runtime bytecode) to `#halt`; clean-room `#Top` and the mutation residual (below) show genuine symbolic execution of the code, not a summary. PASS.
-- **A2/A3 operational bridges:** none exist — nothing preempts fixed execution. PASS (vacuous).
-- **A4 result-bearing abstraction:** no summary functions; the only opaque symbol is `keccak`, supplied by the bundled semantics as an uninterpreted total function (not a candidate-added oracle). The macros are exact constants, not value oracles. PASS.
-- **Program pinning:** entry `<k>` executes the real program term; `<output>`/`<storage>`/`<log>` are constrained to concrete intended values (not free variables), confirmed discriminating by A5. PASS.
-- **A5 non-vacuity (self-authored):** `inputs/mutation-spec.k` module MUTATION = `transfer-success` with the sender-balance postcondition mutated to the false `BAL_FROM -Int VALUE +Int 1`. Command:
-  ```
-  kprover prove --session 8c86f354-… --spec inputs/mutation-spec.k --spec-module MUTATION \
-    --verification inputs/verification.k --verification-module VERIFICATION
-  ```
-  Result: task `db9231b4-31ae-4802-beea-57e5844d9592`, outcome `notProved`, exit `[1]`,
-  `PROOF FAILED: MUTATION.transfer-success-MUTATED`. Stuck node 4 fails matching on
-  the `<storage>` cell with the unmet condition (path condition `#Top`, i.e. satisfiable):
-  ```
-  keccak(#buf(32, MSG_SENDER) +Bytes …0x…01) |-> BAL_FROM -Int VALUE
-        #Implies                                 BAL_FROM -Int VALUE +Int 1
-  ```
-  The true execution stores `BAL_FROM -Int VALUE`; the false alternative is unreachable.
-  This both establishes non-vacuity and independently confirms the storage key is
-  `keccak(#buf(32,sender)+Bytes #buf(32,1))` = slot 1. PASS.
+Full proof-local surface of `verification.k` (`grep` of every
+`rule/claim/syntax/context/configuration/imports`):
 
-Gate A: **PASS.**
+- **`VERIFICATION-SUMMARIES`** (`imports EVM`):
+  - `syntax Bytes ::= "StandardTokenRuntime" [function, symbol(StandardTokenRuntime)]`
+  - `rule StandardTokenRuntime => #parseByteStack("0x6060…0029")`
+  - No other rule/claim/context/configuration.
+- **`VERIFICATION`** (`imports EDSL`, `imports LEMMAS`,
+  `imports VERIFICATION-SUMMARIES`): imports only, no rules.
+- **`spec.k` / `TRANSFER-SPEC`**: the 5 reachability claims, no rules.
 
-## Residual Gate B — intent adequacy (re-judged against the source, not the spec audit)
-- The proven module is exactly the 5 requested claims; the final run was unfiltered and all closed. No proving-time narrowing (no strengthened `requires` added, no dropped claim, no bounded stand-in).
-- Coverage of the positive-transfer space (`value>0`, sufficient balance) is complete across three claims: `to==sender` → transfer-self; `to≠sender ∧ no overflow` → transfer-success; `to≠sender ∧ overflow` → transfer-overflow. Failure/revert modes: `balances[sender]<value` → transfer-insufficient (return false, not revert — matches source `else return false` and the `0x76d` branch); `callvalue>0` → transfer-not-payable (revert). The `value==0 ∧ balance≥0` else-trigger is explicitly excluded from claim 3's "insufficient" reading in SCOPE.md — documented, not silent.
-- transfer-overflow states the program's true wrapped result and remains `EVMC_SUCCESS`; it is a faithful **B4 implementation/spec discrepancy** vs EIP-20 (no SafeMath in this 0.4.x contract), not a false claim of correctness.
+| Extension | Class | Justification / finding |
+|---|---|---|
+| `StandardTokenRuntime => #parseByteStack("0x…")` | Definitional constant | Names the code under proof. Verified byte-for-byte equal to `contract/StandardToken.inlined.bytes` (2091 bytes / 4184 hex chars, `0x`-prefixed; Python sha/compare: EXACT MATCH). `#parseByteStack` is a stock semantics symbol. It supplies bytecode, it does **not** rewrite any program term before `#execute`. |
+| `imports EDSL` | Generic semantics import | `EDSL` module is defined in the pinned semantics (`edsl.md`); supplies `#abiCallData`, `#abiEventLog`, `#hashedLocation`, `#buf`, `#lookup`, storage helpers. Not proof-local. |
+| `imports LEMMAS` | Generic semantics import | `LEMMAS [symbolic]` defined in pinned semantics (`lemmas/lemmas.k`); byte/integer/storage simplifications. Not proof-local. |
 
-Gate B: **PASS.**
+The `requires "edsl.md"` / `requires "lemmas/lemmas.k"` in `verification.k`
+resolve to files that exist in the pinned semantics tree
+(`…/evm-semantics/edsl.md`, `…/evm-semantics/lemmas/lemmas.k`) — not to
+proof-local copies.
 
-## Gate C — trust and evidence auditability
-Named assumptions and dependents (all recorded in `SCOPE.md`):
-1. **keccak collision-resistance** — claims `transfer-success`, `transfer-overflow` carry
-   `#hashedLocation("Solidity",1,MSG_SENDER) =/=Int #hashedLocation("Solidity",1,TO)`
-   alongside `MSG_SENDER =/=Int TO`. KEVM models `keccak` as an uninterpreted total
-   function (`smtlib(smt_keccak)`), so distinct storage slots for distinct addresses is
-   not derivable and is supplied as a precondition. It is a standard, universally-accepted
-   EVM storage-aliasing assumption, is satisfiable (A5 witness discriminates under it),
-   and — crucially — is stated as a scoped **precondition**, not as a global unsound
-   simplification rule, so it cannot contaminate the other claims. Dependents: claims 1, 5 only.
-2. **Execution environment** — `<schedule> ISTANBUL`, `<useGas> true` with infinite gas
-   (`#gas(_VGAS)`), non-static call. Isolates functional correctness from gas exhaustion;
-   all transfer opcodes exist under ISTANBUL. Dependents: all 5 claims.
-Evidence: `prove.sh` present and matches the recorded run; construction `proof-003`
-(`ed85c28c…`), audit replay `proof-001` (`a0a462be…`), mutation `proof-002` (`db9231b4…`)
-all retained under their session evidence dirs. Constant checks are exact source
-comparisons (no differential-test summary is needed — there are no summary functions).
-Trust is fully documented and auditable.
+**No operational bridge and no result-bearing abstraction exist.** No
+proof-local rule rewrites a program term; the semantics executes `#execute`
+over the real bytecode to `#halt`. Note verification.k imports `EDSL` (generic
+helpers), NOT the semantics' `EDSL-SUMMARY`/`EDSL-SUM` modules — so no
+summarization/bridge machinery is engaged. `VERIFICATION-SUMMARIES` is not
+edited relative to the spec-audit-approved form (still contains only the
+bytecode constant; the module comment states the theorem is summary-free
+because `transfer` is loop-free — confirmed).
 
-Gate C: **PASS.**
+## Gate A — Real-program soundness: PASS
 
-## Status
-Gates A, B, C all PASS → **VALIDATED**, conditional on the two named, standard,
-recorded assumptions (keccak collision-resistance; ISTANBUL + infinite-gas environment).
+- **A1 program identity / body sensitivity.** Every claim's `<k>` is
+  `(#execute => #halt) ~> _`, `<program>`/`<code>` bound to
+  `StandardTokenRuntime` (the real bytecode), `<pc> 0`,
+  `<callData> = #abiCallData("transfer", #address(TO), #uint256(VALUE))`. The
+  real dispatcher (incl. the non-payable `CALLVALUE ISZERO` guard) executes.
+  No program-defined body is replaced by a summary. Body sensitivity is
+  witnessed by the A5 mutation: the storage postcondition tracks the value the
+  real bytecode writes (see residual below).
+- **A2 operational-state preservation.** No bridge skips execution; the
+  semantics carries all cells. Observable postconditions constrain
+  `<output>`, `<statusCode>`, the token account `<storage>`, and `<log>`;
+  scratch cells (`<wordStack>`, `<localMem>`, `<pc>`, `<gas>`, `<memoryUsed>`,
+  `<refund>`, `<origStorage>`) are `?_` per SCOPE.md — not part of the property.
+- **A3 binding / control / value fidelity.** No operational bridge and no
+  result-bearing opaque abstraction to connect; every value-bearing symbol
+  (`#lookup`, `chop`, `#hashedLocation`, `#buf`, `#abiEventLog`) is a stock
+  KEVM definitional helper, so §"result-bearing abstraction" and
+  §"operational-bridge" obligations are vacuously satisfied (no such extension
+  present).
+- **A4 logical consistency.** The single proof-local rule is a nullary constant
+  with no guard and no overlapping companion; no equational hazard.
+- **A5 result constraint / non-vacuity — PASS (mutation authored and run).**
+  - **Mutation (authored by auditor):** file
+    `inputs/spec_mut.k`, module `MUTANT`, claim `transfer-success-mut` — a copy
+    of `transfer-success` with ONE false change: the recipient slot RHS is
+    `BAL_TO +Int VALUE +Int 1` instead of `BAL_TO +Int VALUE`. False for every
+    satisfiable input.
+  - **Satisfiable witness:** `ACCTID = CALLER_ID = 1`, `TO = 2`, `VALUE = 1`,
+    `BAL_FROM = 1`, `BAL_TO = 0`, `ACCT_STORAGE` with those two slots — all
+    preconditions hold (`CALLER≠TO`, slots distinct, `VALUE>0`,
+    `BAL_FROM≥VALUE`, `BAL_TO+VALUE<pow256`).
+  - **Command:** `kprover prove --session 65dd4426-… --spec inputs/spec_mut.k
+    --spec-module MUTANT --verification inputs/verification.k
+    --verification-module VERIFICATION`
+  - **Exit / outcome:** exit **1**, `outcome: notProved`, task
+    `830f41d8-6b96-456c-9248-b274327f7c36` (proof-002).
+    `PROOF FAILED: MUTANT.transfer-success-mut`, `1 Failure nodes. (0 pending
+    and 1 failing)`.
+  - **Residual (unmet condition, `<storage>` cell match failure, path
+    condition `#Top`):** the antecedent (real execution) writes
+    `#lookup(ACCT_STORAGE, keccak(#buf(32,TO)+Bytes …01)) +Int VALUE` to the
+    recipient slot, while the consequent (mutant) demands
+    `… +Int VALUE +Int VALUE +Int 1` (KEVM re-expresses
+    `BAL_TO ==Int #lookup(…)`, so the extra `+Int 1` — and the doubled VALUE
+    from substituting the recipient's own prior balance — surfaces as an
+    unsatisfiable equality). The mutation is rejected exactly at the recipient
+    balance update, confirming the success claim genuinely constrains the
+    recipient balance to `BAL_TO + VALUE`.
 
-## Verdict
+Gate A PASS: the proof's only extension is a faithful bytecode constant plus
+generic semantics imports; execution is real; results are non-vacuously
+constrained.
 
+## Residual Gate B — intent adequacy: PASS
+
+Rechecked against `contract/StandardToken.inlined.sol` `transfer` and `eip-20.md`,
+independently of spec-audit-1's verdict; also compared the proven theorem to
+the approved spec (unchanged — proving added no equations, strengthened no
+`requires`, dropped no claim, used no depth bound).
+
+- **B1 input domain.** `balances` slot = 1 (source order totalSupply=0,
+  balances=1, allowed=2; confirmed by bytecode `6001…SLOAD` mapping accesses and
+  the `#hashedLocation("Solidity",1,·)` addressing). The five claims partition
+  the `transfer` selector's reachable behaviour:
+  success/overflow together cover `to≠caller ∧ value>0 ∧ bal[caller]≥value`
+  (split on the recipient-wrap predicate, no gap); self covers `to=caller`;
+  insufficient covers `bal[caller]<value` (which forces `value>0`, so the
+  else-branch is reached cleanly); not-payable covers `callValue>0`. These are
+  exactly the five requested properties.
+- **B2 model adequacy.** KEVM ISTANBUL, `useGas=true`, symbolic `#gas`. Unchecked
+  0.4.x wrap is modelled by `chop` (mod 2^256); `transfer-overflow`'s RHS uses
+  `chop(BAL_TO+VALUE)`, the faithful form. No model boundary asserted without
+  a witness.
+- **B3 summary-to-property.** No summary function exists; each postcondition is
+  stated directly over configuration cells, so there is no summary→property
+  bridge to trust.
+- **B4 implementation-vs-intent.** The theorem states what the code does:
+  returns `false` on low balance (not revert), silent recipient overflow, and
+  rejects `value==0` (guard `value>0`). Deviations from EIP-20 SHOULDs
+  (throw-on-insufficient; zero-value transfers as normal) are recorded as
+  implementation/spec discrepancies in SCOPE.md, not asserted as compliance.
+  `value==0` is a stated, deliberate exclusion from the positive theorem.
+
+No domain narrowing beyond the disclosed, contract-honest exclusions. Gate B PASS.
+
+## Gate C — trust and evidence auditability: PASS
+
+- **C1 trust ledger.** One named assumption:
+  `#hashedLocation("Solidity",1,CALLER_ID) =/=Int
+  #hashedLocation("Solidity",1,TO)` (keccak collision-resistance / storage-slot
+  distinctness). KEVM models `keccak` as an uninterpreted SMT function with no
+  injectivity axiom, so `CALLER_ID =/= TO` alone does not entail slot
+  distinctness. Recorded in SCOPE.md.
+  - **Dependents:** `transfer-success`, `transfer-overflow` (the distinct-account
+    claims). **Independent of it:** `transfer-self`, `transfer-insufficient`,
+    `transfer-not-payable`.
+  - Affects: value/state (which storage slot the recipient write lands in). No
+    control/termination assumption.
+- **C2 reproducible evidence.** All evidence is retained under the audit
+  session: positive run `proof-001/result.json` (task `976eaa90-…`), mutation
+  `proof-002/result.json` (task `830f41d8-…`), validation `validation-001`
+  (task `9ef4b97b-…`). Bytecode equality check reproduced by
+  byte comparison against `contract/StandardToken.inlined.bytes`. No
+  differential-test artifact is claimed (no summary/abstraction to
+  differentially test) — none required.
+- **C3 honest result language.** Reflected in PROOF.md: formally-proved facts
+  vs the one assumption-conditional pair vs excluded behaviour are separated.
+
+Gate C PASS.
+
+## Findings
+
+No finding rises to FAIL. All five claims reconstruct to `#Top`/proved in the
+clean room; the sole proof extension is a byte-faithful bytecode constant plus
+stock EDSL/LEMMAS imports (no bridge, no opaque result-bearing abstraction); the
+authored A5 mutation is correctly rejected with a storage-slot residual; the
+keccak-distinctness assumption is the only trust-ledger entry, disclosed in
+SCOPE.md and confined to the two distinct-account claims.
+
+```text
 VERDICT: PASS
-REASON: All five transfer claims re-close to #Top in a clean-room session, no
-execution-bypassing extensions exist, a self-authored false-postcondition mutation
-is correctly rejected with a satisfiable residual, and intent/trust are adequate and
-documented — status VALIDATED under the recorded keccak and gas/schedule assumptions.
+REASON: All five claims independently reconstruct to proved/#Top under the pinned evm@4f4c3843076c semantics; the only proof extension is a byte-faithful runtime-bytecode constant plus generic EDSL/LEMMAS imports (no operational bridge or opaque abstraction), the authored false-postcondition mutation is correctly rejected with a stuck storage residual, and the single keccak-distinctness assumption is ledgered — Gates A, B, C all PASS, final status VALIDATED.
+```

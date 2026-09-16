@@ -1,0 +1,12 @@
+{
+  "attemptsUsed": 4,
+  "projectRoot": "/home/dmn/kit-example/examples/01-transfer",
+  "runsUsed": 0,
+  "semantics": {
+    "commit": "4f4c3843076c",
+    "id": "evm",
+    "repo": "https://github.com/nlp-research-rosu/semantics-evm"
+  },
+  "sessionId": "5acb1515-f651-41ff-b351-5d14436376b8",
+  "validationsUsed": 4
+}

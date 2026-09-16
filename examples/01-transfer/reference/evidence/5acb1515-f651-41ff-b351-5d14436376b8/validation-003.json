@@ -1,0 +1,36 @@
+{
+  "stderr": "[Warning] Compiler: Variable 'B2' defined but not used. Prefix variable name\nwith underscore if this is intentional.\n\tSource(/data/definitions/.7_1_337-haskell-evm-4f4c3843076c-ca9a7fb5facf5680c31ce9c2dbeca97881ce97b1c8bff5790fd8d27731c2b6a4.907cbaaf-1fec-4fd6-a872-198dc5ccd364/source/lemmas/bytes-simplification.k)\n\tLocation(301,25,301,27)\n[Warning] Compiler: Variable 'LOGS' defined but not used. Prefix variable name\nwith underscore if this is intentional.\n\tSource(/data/tasks/9536f646-5147-4863-851a-d033f5d76567/input/spec.k)\n\tLocation(142,17,142,21)\n\t142 |\t          <log> LOGS </log>\n\t    .\t                ^~~~\n[Warning] Compiler: Variable 'LOGS' defined but not used. Prefix variable name\nwith underscore if this is intentional.\n\tSource(/data/tasks/9536f646-5147-4863-851a-d033f5d76567/input/spec.k)\n\tLocation(194,17,194,21)\n\t194 |\t          <log> LOGS </log>\n\t    .\t                ^~~~\n[Warning] Compiler: Variable 'ACCT_STORAGE' defined but not used. Prefix\nvariable name with underscore if this is intentional.\n\tSource(/data/tasks/9536f646-5147-4863-851a-d033f5d76567/input/spec.k)\n\tLocation(205,23,205,35)\n\t205 |\t            <storage> ACCT_STORAGE </storage>\n\t    .\t                      ^~~~~~~~~~~~\n",
+  "stdout": "kore-exec /data/definitions/7_1_337-haskell-evm-4f4c3843076c-ca9a7fb5facf5680c31ce9c2dbeca97881ce97b1c8bff5790fd8d27731c2b6a4/definition/definition.kore --module VERIFICATION --prove /tmp/.kprove-2026-09-16-04-29-26-825-1d7c3932-969e-4ebb-9735-0e8e81e84c24/spec.kore --spec-module TRANSFER-SPEC --output /tmp/.kprove-2026-09-16-04-29-26-825-1d7c3932-969e-4ebb-9735-0e8e81e84c24/result.kore\n",
+  "task": {
+    "createdAt": "2026-09-16T09:29:25.103432Z",
+    "error": null,
+    "finishedAt": "2026-09-16T09:29:50.402919Z",
+    "id": "9536f646-5147-4863-851a-d033f5d76567",
+    "kind": "proofDryRun",
+    "result": {
+      "definitionId": "7_1_337-haskell-evm-4f4c3843076c-ca9a7fb5facf5680c31ce9c2dbeca97881ce97b1c8bff5790fd8d27731c2b6a4",
+      "valid": true
+    },
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "startedAt": "2026-09-16T09:29:25.925824Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 24477,
+      "queueMilliseconds": 822,
+      "totalMilliseconds": 25299
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 23532,
+        "exitCode": 0,
+        "finishedAt": "2026-09-16T09:29:49.962015Z",
+        "outcome": "success",
+        "startedAt": "2026-09-16T09:29:26.429169Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

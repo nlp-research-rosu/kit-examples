@@ -1,23 +1,20 @@
 #!/usr/bin/env bash
-# Executable proof evidence for StandardToken.transfer (5 claims).
-# Runs the global kprover CLI against the SAME construction session and the
-# SAME sources used for the recorded #Top run (proof-003). No depth bound,
-# no claim filtering: the final positive proof is the whole SPEC module.
 #
-# Session : 16dec4d8-3461-45d9-8112-23f9a0ec6c5b
-# Semantics: evm @ 4f4c3843076c (KEVM, K 7.1.337)
-# Task timeout: 3600 s (kprover config).
+# Executable proof evidence — transfer(address,uint256) of StandardToken,
+# verified at EVM bytecode level with KEVM through Prover.
+#
+# Reproduces the final positive proof exactly: all FIVE reachability claims
+# proved TOGETHER in one `kprove` invocation, with NO depth bound, under the
+# session-pinned `evm` semantics (commit 4f4c3843076c). The last full run was
+# recorded under <workspaceDir>/proof-004/ with outcome "proved" (5/5).
+#
+# Spec/verification paths are resolved by the CLI relative to the session
+# workspaceDir (.kprover/sessions/$SESSION), not the shell's cwd.
 set -euo pipefail
 
-SESSION=16dec4d8-3461-45d9-8112-23f9a0ec6c5b
+SESSION=5acb1515-f651-41ff-b351-5d14436376b8
 
 kprover prove \
   --session "$SESSION" \
-  --spec inputs/spec.k --spec-module SPEC \
+  --spec inputs/spec.k               --spec-module         TRANSFER-SPEC \
   --verification inputs/verification.k --verification-module VERIFICATION
-
-# Expected: JSON with task.result.outcome == "proved", residual == null,
-# tool exitCode 0, and stdout "PROOF PASSED" for all five claims:
-#   SPEC.transfer-success, SPEC.transfer-self, SPEC.transfer-insufficient,
-#   SPEC.transfer-not-payable, SPEC.transfer-overflow.
-# Recorded evidence: .kprover/sessions/$SESSION/proof-003/result.json

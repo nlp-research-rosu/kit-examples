@@ -2,6 +2,7 @@
 # Usage: run-example.sh <example-dir-name>                       fresh run
 #        run-example.sh <example-dir-name> --resume <sid> <msg>   continue a print session
 # Non-interactive KIT run with an explicit tool allowlist (no permission bypass).
+# KIT comes from the installed kit@kit-plugin marketplace plugin (no --plugin-dir).
 set -u
 ex="$1"; shift
 root="$HOME/kit-example"
@@ -34,7 +35,6 @@ fi
 start=$(date -u +%Y-%m-%dT%H:%M:%SZ); echo "start=$start" > "$runs/timing$suffix.txt"
 claude -p "${args[@]}" \
   --append-system-prompt "$harness" \
-  --plugin-dir "$root/third_party/kit" \
   --add-dir "$HOME/.config/kprover" \
   --permission-mode acceptEdits \
   --allowedTools "${allowed[@]}" \

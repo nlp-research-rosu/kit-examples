@@ -1,0 +1,44 @@
+{
+  "stderr": "[Error] Inner Parser: Parse error: unexpected token 'CALLER' following token\n'<caller>'.\n\tSource(/data/tasks/3955aac0-7d60-477d-a909-4bbf7275e23d/input/spec.k)\n\tLocation(19,20,19,26)\n\t19 |\t          <caller> CALLER </caller>\n\t   .\t                   ^~~~~~\n[Error] Inner Parser: Parse error: unexpected token 'CALLER' following token\n'<caller>'.\n\tSource(/data/tasks/3955aac0-7d60-477d-a909-4bbf7275e23d/input/spec.k)\n\tLocation(76,20,76,26)\n\t76 |\t          <caller> CALLER </caller>\n\t   .\t                   ^~~~~~\n[Error] Inner Parser: Parse error: unexpected token 'CALLER' following token\n'<caller>'.\n\tSource(/data/tasks/3955aac0-7d60-477d-a909-4bbf7275e23d/input/spec.k)\n\tLocation(130,20,130,26)\n\t130 |\t          <caller> CALLER </caller>\n\t    .\t                   ^~~~~~\n[Error] Inner Parser: Parse error: unexpected token 'CALLER' following token\n'<caller>'.\n\tSource(/data/tasks/3955aac0-7d60-477d-a909-4bbf7275e23d/input/spec.k)\n\tLocation(182,20,182,26)\n\t182 |\t          <caller> CALLER </caller>\n\t    .\t                   ^~~~~~\n[Error] Inner Parser: Parse error: unexpected token 'CALLER' following token\n'<caller>'.\n\tSource(/data/tasks/3955aac0-7d60-477d-a909-4bbf7275e23d/input/spec.k)\n\tLocation(234,20,234,26)\n\t234 |\t          <caller> CALLER </caller>\n\t    .\t                   ^~~~~~\n[Error] Compiler: Had 5 parsing errors.\n",
+  "stdout": "",
+  "task": {
+    "createdAt": "2026-09-16T09:27:27.982194Z",
+    "error": null,
+    "finishedAt": "2026-09-16T09:28:24.529697Z",
+    "id": "3955aac0-7d60-477d-a909-4bbf7275e23d",
+    "kind": "proofDryRun",
+    "result": {
+      "definitionId": "7_1_337-haskell-evm-4f4c3843076c-ca9a7fb5facf5680c31ce9c2dbeca97881ce97b1c8bff5790fd8d27731c2b6a4",
+      "valid": false
+    },
+    "semantics": {
+      "commit": "4f4c3843076c",
+      "id": "evm"
+    },
+    "startedAt": "2026-09-16T09:27:28.770429Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 55759,
+      "queueMilliseconds": 788,
+      "totalMilliseconds": 56547
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 47311,
+        "exitCode": 0,
+        "finishedAt": "2026-09-16T09:28:17.642883Z",
+        "outcome": "success",
+        "startedAt": "2026-09-16T09:27:30.330910Z",
+        "tool": "kompile"
+      },
+      {
+        "durationMilliseconds": 6102,
+        "exitCode": 113,
+        "finishedAt": "2026-09-16T09:28:24.101627Z",
+        "outcome": "exit_error",
+        "startedAt": "2026-09-16T09:28:17.999334Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

@@ -77,7 +77,42 @@ Construction session `787a58a8`, audit session `ec1b5850`, both on `rv-prover`.
 | proof audit | VERDICT PASS, Gates A/B/C PASS |
 | PROOF.md | `VALIDATED`; single assumption: keccak collision freedom; schedule SHANGHAI |
 
-Wall clock: 1 h 35 min (22:04 to 23:39), unattended.
+Wall clock: 1 h 42 min (22:04 to 23:46), unattended.
+
+## Example 1 re-run through kit-plugin v0.1.1 (2026-09-16)
+
+Plugin `kit@kit-plugin` 0.1.1 installed from the marketplace (private repo, gh
+credentials), `kprover` 0.1.1 from the release tarball via `gh release download`
+(the curl installer 404s while kit-plugin is private). v0.1.1 is kit `b3dee27`
+plus version bumps. Session `5acb1515` on `rv-prover`, started 09:15Z.
+
+| Step | Result |
+|---|---|
+| validation 1 | `DEFINITION_COMPILATION_FAILED`, no diagnostics; agent repaired blind |
+| validation 2 | parse errors (`CALLER`) |
+| validation 3 | valid |
+| proof 1 | all 5 claims: 4 proved, `transfer-overflow` residual (`chop(...)` vs `- pow256`), 551 s |
+| validation 4 | valid after the fix |
+| proof 2 | `--claim transfer-overflow`, proved, 157 s |
+| proof 3 | full module, task `e710295f`; client received HTTP 502 from rv-prover while polling (~09:47Z) and gave up ("Log unavailable: Prover returned HTTP 502 Bad Gateway"); task kept running server-side |
+| proof 4 | agent resubmitted the full module, task `a6092bbb`, proved, 547 s, recorded in `prove.sh` (the orphaned proof 3 also completed as proved) |
+| spec audit | `audits/spec-audit-1.md`, VERDICT PASS, written after the proofs rather than before |
+| audit replay | clean-room session `65dd4426` (under the example directory this time), 5/5 proved, 548 s |
+| mutation | recipient post-balance plus one, `notProved`, 198 s |
+| proof audit | VERDICT PASS, Gates A/B/C PASS, fresh-subagent review |
+| PROOF.md | `VALIDATED`; single ledgered keccak-distinctness assumption |
+
+Wall clock: 64 min (09:15 to 10:19), unattended, no interruptions. This is
+the run under `examples/01-transfer/reference/kit-run/`; the earlier
+`b3dee27` run is kept under `kit-run-b3dee27/` and `evidence-b3dee27/`.
+
+The 502 was transient (health 200 within two minutes, no redeploy, memory
+peak 5.5 of 24 GB). Two findings: the `kprover` poll loop treats one 5xx as
+terminal instead of retrying, and the kit then spends a fresh attempt on a
+duplicate task.
+
+Version map: kit-plugin `v0.1.0` = kit `7c03c20` (no EVM hints);
+kit-plugin `v0.1.1` = kit `fe465af` = `b3dee27` + version bumps.
 
 ## Findings for the kit (nlp-research-rosu/kit)
 
