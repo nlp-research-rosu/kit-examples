@@ -19,7 +19,18 @@ not need: `CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0` and
 `BASH_MAX_TIMEOUT_MS=3600000`. An appended system prompt told the agent to run
 `kprover` in the foreground. The pasted prompt was `PROMPT.md`, unchanged.
 
-## Install path (README steps 1 to 4)
+## Install path, current README (kit-plugin public, 2026-09-16 ~10:40Z)
+
+From a clean clone of `main` (81df778), followed verbatim: marketplace add,
+`claude plugin install kit@kit-plugin` (0.1.1, `evm-spec-patterns.md`
+present), the curl installer (`kprover` 0.1.1 into `~/.local/bin`, prints
+the env-file hint), then `kprover --version`, `health`, `semantics` against
+`rv-prover`. PASS. Before the repo went public the same marketplace steps
+worked with `gh` credentials but the curl installer returned 404.
+kit-plugin's own README still says "The first release, v0.1.0, is being
+prepared".
+
+## Install path, original README (kit submodule + cargo, 2026-09-15)
 
 - Clone with `--recurse-submodules` fetches the private kit submodule once
   `gh auth setup-git` has run. PASS
