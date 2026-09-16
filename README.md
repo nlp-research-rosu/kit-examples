@@ -18,26 +18,37 @@ want to see what an agent does with them.
 
 ## Prerequisites
 
-- GitHub access to `nlp-research-rosu/kit` and this repository (you were
-  invited to both). Both are private, so authenticate Git before cloning:
+- GitHub access to this repository (you were invited). It is private, so
+  authenticate Git before cloning:
 
   ```bash
   gh auth login
   gh auth setup-git
   ```
 
-- `git`, a Rust toolchain (`curl https://sh.rustup.rs -sSf | sh`), and
-  [Claude Code](https://claude.com/claude-code).
-- macOS or Linux. This path was verified on Ubuntu 24.04 x64.
+- `git` and [Claude Code](https://claude.com/claude-code).
+- macOS or Linux. This path was verified on Ubuntu 24.04 x64 with KIT v0.1.1.
 
 No local K installation is needed. All K work runs on Prover.
 
 ## Install
 
+KIT ships as a Claude Code plugin plus a `kprover` command-line client, both
+from the public `nlp-research-rosu/kit-plugin` repository.
+
 ```bash
-git clone --recurse-submodules https://github.com/nlp-research-rosu/kit-example.git
+git clone https://github.com/nlp-research-rosu/kit-example.git
 cd kit-example
-cargo install --path third_party/kit/crates/kprover-cli
+claude plugin marketplace add nlp-research-rosu/kit-plugin
+claude plugin install kit@kit-plugin
+curl --proto '=https' --tlsv1.2 -LsSf \
+  https://github.com/nlp-research-rosu/kit-plugin/releases/latest/download/install-kprover.sh | sh
+```
+
+The installer puts `kprover` in `~/.local/bin` and adds it to your shell's
+PATH, so open a new terminal, then:
+
+```bash
 kprover --version && kprover health && kprover semantics
 ```
 
@@ -72,7 +83,7 @@ the pipeline times out and burns its budget. Check with `kprover config`.
 
 ```bash
 cd examples/01-transfer
-claude --plugin-dir ../../third_party/kit
+claude
 ```
 
 Paste the contents of `PROMPT.md` as your first message. The prompt already
@@ -115,7 +126,7 @@ discrepancy against EIP-20 rather than papered over.
 
 ```bash
 cd examples/02-erc20-full
-claude --plugin-dir ../../third_party/kit
+claude
 ```
 
 Paste `PROMPT.md`. Same pipeline, broader theorem: KIT decides which claims
@@ -170,8 +181,12 @@ a verification into a copy.
   resume the same session afterwards.
 - A proof is cancelled at almost exactly 10 minutes: the agent ran `kprover`
   in the foreground and hit Claude Code's shell-command timeout. Start Claude
-  Code with `BASH_MAX_TIMEOUT_MS=3600000 claude --plugin-dir ...` so foreground
-  proofs can run as long as the Prover task timeout.
+  Code with `BASH_MAX_TIMEOUT_MS=3600000 claude` so foreground proofs can run
+  as long as the Prover task timeout.
+- KIT does not show up (no `kit:` skills when you type `/`): run
+  `claude plugin marketplace update kit-plugin && claude plugin update kit@kit-plugin`
+  and start a new session. The same two commands pick up new KIT releases;
+  rerun the installer to update `kprover`.
 - Anything else: send the `.kprover/sessions/<id>/` directory. It has every
   server response.
 
