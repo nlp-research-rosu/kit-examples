@@ -1,0 +1,13 @@
+{
+  "attemptsUsed": 3,
+  "projectRoot": "examples/03-python-swap",
+  "runsUsed": 0,
+  "semantics": {
+    "commit": "e5d24a5429a4",
+    "id": "python-3-14-6",
+    "repo": "https://github.com/nlp-research-rosu/semantics-python-3.14.6"
+  },
+  "sessionId": "2f8278f9-afcf-4fe6-b17b-882f0db1524d",
+  "validationsUsed": 5,
+  "workspaceDir": "examples/03-python-swap/.kprover/sessions/2f8278f9-afcf-4fe6-b17b-882f0db1524d"
+}

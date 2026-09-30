@@ -1,0 +1,51 @@
+{
+  "stderr": "",
+  "stdout": "PROOF PASSED: SPEC.swap-entry\n",
+  "task": {
+    "createdAt": "2026-09-30T09:24:51.361792Z",
+    "error": null,
+    "finishedAt": "2026-09-30T09:26:53.267301Z",
+    "id": "2a657432-62af-4292-b48f-8b68e8bb96af",
+    "kind": "proof",
+    "metrics": {
+      "SPEC.swap-entry": {
+        "leaves": [
+          {
+            "conditions": [],
+            "coversGoal": true,
+            "node": 3,
+            "statuses": []
+          }
+        ],
+        "longestPathLength": 1,
+        "nodeCount": 2,
+        "splitCount": 0
+      }
+    },
+    "result": {
+      "definitionId": "7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-2ed361be54024a4400644fc9eb897ea88fc8a3dee80800a4450537159292e626",
+      "outcome": "proved"
+    },
+    "semantics": {
+      "commit": "e5d24a5429a4",
+      "id": "python-3-14-6"
+    },
+    "startedAt": "2026-09-30T09:25:58.197548Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 55069,
+      "queueMilliseconds": 66835,
+      "totalMilliseconds": 121905
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 54275,
+        "exitCode": 0,
+        "finishedAt": "2026-09-30T09:26:52.975837Z",
+        "outcome": "success",
+        "startedAt": "2026-09-30T09:25:58.700346Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

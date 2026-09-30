@@ -1,0 +1,62 @@
+{
+  "stderr": "",
+  "stdout": "PROOF PASSED: SPEC.run-shs\n",
+  "task": {
+    "createdAt": "2026-09-30T09:50:35.018362Z",
+    "error": null,
+    "finishedAt": "2026-09-30T09:53:13.146482Z",
+    "id": "cafb0727-14f0-48b3-ac5f-36a14b8386ae",
+    "kind": "proof",
+    "metrics": {
+      "SPEC.run-shs": {
+        "leaves": [
+          {
+            "conditions": [
+              "A:Int *Int B:Int >=Int -5",
+              "A:Int *Int B:Int <=Int 256",
+              "A:Int *Int B:Int +Int A:Int -Int B:Int >=Int -5",
+              "A:Int *Int B:Int +Int A:Int -Int B:Int <=Int 256",
+              "notBool 0 ==Int A:Int *Int B:Int +Int A:Int -Int B:Int +Int 21",
+              "A:Int *Int B:Int +Int A:Int -Int B:Int +Int 21 >=Int 16",
+              "A:Int *Int B:Int +Int A:Int -Int B:Int +Int 21 <=Int 277",
+              "notBool A:Int *Int B:Int +Int A:Int >=Int -5 andBool A:Int *Int B:Int +Int A:Int <=Int 256"
+            ],
+            "coversGoal": true,
+            "node": 3,
+            "statuses": [
+              "terminal"
+            ]
+          }
+        ],
+        "longestPathLength": 1,
+        "nodeCount": 2,
+        "splitCount": 0
+      }
+    },
+    "result": {
+      "definitionId": "7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-02ced0c6244c19bab2fde6cca98d12724669527a3cc2a5dc47113aa4a8cf49ec",
+      "outcome": "proved"
+    },
+    "semantics": {
+      "commit": "e5d24a5429a4",
+      "id": "python-3-14-6"
+    },
+    "startedAt": "2026-09-30T09:50:38.208079Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 154938,
+      "queueMilliseconds": 3189,
+      "totalMilliseconds": 158128
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 152619,
+        "exitCode": 0,
+        "finishedAt": "2026-09-30T09:53:12.856255Z",
+        "outcome": "success",
+        "startedAt": "2026-09-30T09:50:40.236850Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}
