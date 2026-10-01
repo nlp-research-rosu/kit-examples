@@ -1,20 +1,27 @@
 # kit-example
 
-Agentic formal verification, end to end: you hand an AI agent a smart contract
-and a property, and KIT writes the K reachability specification, proves it on
+Agentic formal verification, end to end: you hand an AI agent a program or
+smart contract and a property, and KIT writes the K reachability specification, proves it on
 our hosted Prover, audits its own proof in a clean room, and leaves you a
 machine-checked `PROOF.md`. This repository is the shortest path to seeing that
-happen on a contract you already know: the HKG ERC20 token.
+happen with the HKG ERC20 token and three Python programs.
 
-Two examples, same contract, increasing scope:
+Two EVM examples, same contract, increasing scope, plus three Python
+starters from KleverBench:
 
-| Example | Scope | Expected wall clock |
+| Example | Scope | Wall clock |
 |---|---|---|
 | `examples/01-transfer` | the `transfer` function only | about an hour |
 | `examples/02-erc20-full` | every externally callable function | several hours |
+| `examples/03-python-swap` | integer variable swap and tuple return | 1h34m |
+| `examples/04-python-arithmetic` | integer multiplication, addition, and subtraction | 2h45m |
+| `examples/05-python-absolute-value` | conditional branching and integer negation | 1h52m |
 
-Nothing here teaches K. It assumes you already read KEVM specs fluently and
-want to see what an agent does with them.
+The Python times are recorded agent runtimes with KIT v0.1.3, rounded to
+the nearest minute. All three proofs passed and completed KIT's proof audit.
+
+Nothing here teaches K. It assumes you already read K specifications fluently
+and want to see what an agent does with them.
 
 ## Prerequisites
 
@@ -146,10 +153,59 @@ first line is `VALIDATED`, conditional on one recorded assumption (keccak
 collision freedom). The session keeps running while you do other things, and
 every accepted submission is retained under `.kprover/sessions/<id>/`.
 
+## Example 3: Python swap
+
+```bash
+cd examples/03-python-swap
+claude
+```
+
+Use KIT v0.1.3 or later and check that `kprover semantics` lists
+`python-3-14-6` on your configured Prover. These Python runs use
+`https://prover.intentcomputing.org`; set `server_url` to that endpoint in
+`~/.config/kprover/config.toml` if your instance does not offer it.
+Paste `PROMPT.md`. The example supplies the Python source and its
+CPython 3.14.6 `.kpyc` export.
+
+For arbitrary integer inputs `A`, `B`, and `R`, prove that
+`run(A, B, R)` returns `(B, A, A)`. The temporary variable is overwritten
+and the two original values are swapped.
+
+## Example 4: Python arithmetic
+
+```bash
+cd examples/04-python-arithmetic
+claude
+```
+
+Paste `PROMPT.md` with the same Python semantics and KIT prerequisites.
+For arbitrary integer inputs `A`, `B`, and `R`, prove that
+`run(A, B, R)` returns `(A, B, A * B + A - B)`.
+
+The reference proof covers both small and heap-allocated integer results.
+Its eight claims partition the representations of the three intermediate
+arithmetic results and together cover all integer inputs.
+
+## Example 5: Python absolute value
+
+```bash
+cd examples/05-python-absolute-value
+claude
+```
+
+Paste `PROMPT.md` with the same Python semantics and KIT prerequisites.
+For arbitrary integer inputs `A` and `R`, prove that `run(A, R)` returns
+`(A, abs(A))`. The proof covers the negative and nonnegative branches.
+
+These programs are Python rewrites of KleverBench programs. Their prompts
+state the original integer properties directly; KIT writes the formal
+specifications itself. The theorems establish partial correctness under
+`python-3-14-6`.
+
 ## Compare with the reference run
 
-The `reference` branch carries our own completed runs so you can diff what your
-agent produced against what ours did:
+The `reference` branch carries our own completed EVM and Python runs so you
+can diff what your agent produced against what ours did:
 
 ```bash
 git fetch origin reference
