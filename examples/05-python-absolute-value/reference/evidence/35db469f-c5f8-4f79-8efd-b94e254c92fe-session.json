@@ -1,0 +1,13 @@
+{
+  "attemptsUsed": 0,
+  "projectRoot": "examples/05-python-absolute-value",
+  "runsUsed": 0,
+  "semantics": {
+    "commit": "e5d24a5429a4",
+    "id": "python-3-14-6",
+    "repo": "https://github.com/nlp-research-rosu/semantics-python-3.14.6"
+  },
+  "sessionId": "35db469f-c5f8-4f79-8efd-b94e254c92fe",
+  "validationsUsed": 1,
+  "workspaceDir": "examples/05-python-absolute-value/.kprover/sessions/35db469f-c5f8-4f79-8efd-b94e254c92fe"
+}

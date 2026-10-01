@@ -1,0 +1,36 @@
+{
+  "stderr": "[Warning] Compiler: Variable '?NEXT' defined but not used. Prefix variable name\nwith underscore if this is intentional.\n\tSource(/data/tasks/3b65214d-20c9-4f56-8838-6349016e3210/input/spec.k)\n\tLocation(19,26,19,31)\n\t19 |\t        <nextId> 4096 => ?NEXT:Int </nextId>\n\t   .\t                         ^~~~~\n[Warning] Compiler: Variable '?INTERPRETERS' defined but not used. Prefix\nvariable name with underscore if this is intentional.\n\tSource(/data/tasks/3b65214d-20c9-4f56-8838-6349016e3210/input/spec.k)\n\tLocation(27,30,27,43)\n\t27 |\t      <interpreters> .Bag => ?INTERPRETERS:Bag </interpreters>\n\t   .\t                             ^~~~~~~~~~~~~\n",
+  "stdout": "kore-exec /data/definitions/7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-2ed361be54024a4400644fc9eb897ea88fc8a3dee80800a4450537159292e626/definition/definition.kore --module VERIFICATION --prove /tmp/.kprove-2026-09-30-04-24-13-481-ec8378ec-5dd8-4577-a2bf-5f74d7129c09/spec.kore --spec-module SPEC --output /tmp/.kprove-2026-09-30-04-24-13-481-ec8378ec-5dd8-4577-a2bf-5f74d7129c09/result.kore\n",
+  "task": {
+    "createdAt": "2026-09-30T09:24:04.126923Z",
+    "error": null,
+    "finishedAt": "2026-09-30T09:24:29.801877Z",
+    "id": "3b65214d-20c9-4f56-8838-6349016e3210",
+    "kind": "proofDryRun",
+    "result": {
+      "definitionId": "7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-2ed361be54024a4400644fc9eb897ea88fc8a3dee80800a4450537159292e626",
+      "valid": true
+    },
+    "semantics": {
+      "commit": "e5d24a5429a4",
+      "id": "python-3-14-6"
+    },
+    "startedAt": "2026-09-30T09:24:12.488522Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 17313,
+      "queueMilliseconds": 8361,
+      "totalMilliseconds": 25674
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 16375,
+        "exitCode": 0,
+        "finishedAt": "2026-09-30T09:24:29.367561Z",
+        "outcome": "success",
+        "startedAt": "2026-09-30T09:24:12.991842Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

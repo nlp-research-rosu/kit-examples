@@ -1,0 +1,79 @@
+{
+  "stderr": "",
+  "stdout": "PROOF PASSED: SPEC.run-abs\n",
+  "task": {
+    "createdAt": "2026-09-30T09:40:02.834956Z",
+    "error": null,
+    "finishedAt": "2026-09-30T09:41:48.476527Z",
+    "id": "e52516cf-571c-4ada-8570-47baea46ced1",
+    "kind": "proof",
+    "metrics": {
+      "SPEC.run-abs": {
+        "leaves": [
+          {
+            "conditions": [
+              "notBool A:Int <Int 0"
+            ],
+            "coversGoal": true,
+            "node": 7,
+            "statuses": [
+              "terminal"
+            ]
+          },
+          {
+            "conditions": [
+              "A:Int <Int 0",
+              "notBool 0 ==Int 21 -Int A:Int",
+              "0 -Int A:Int >=Int -5",
+              "0 -Int A:Int <=Int 256"
+            ],
+            "coversGoal": true,
+            "node": 10,
+            "statuses": [
+              "terminal"
+            ]
+          },
+          {
+            "conditions": [
+              "A:Int <Int 0",
+              "notBool 0 -Int A:Int >=Int -5 andBool 0 -Int A:Int <=Int 256"
+            ],
+            "coversGoal": true,
+            "node": 11,
+            "statuses": [
+              "terminal"
+            ]
+          }
+        ],
+        "longestPathLength": 5,
+        "nodeCount": 10,
+        "splitCount": 2
+      }
+    },
+    "result": {
+      "definitionId": "7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-33f1f55a8e18df2e1704b2266426fb7fba235949433c5bc541c48c9095f3a14a",
+      "outcome": "proved"
+    },
+    "semantics": {
+      "commit": "e5d24a5429a4",
+      "id": "python-3-14-6"
+    },
+    "startedAt": "2026-09-30T09:40:06.421553Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 102054,
+      "queueMilliseconds": 3586,
+      "totalMilliseconds": 105641
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 101123,
+        "exitCode": 0,
+        "finishedAt": "2026-09-30T09:41:48.186777Z",
+        "outcome": "success",
+        "startedAt": "2026-09-30T09:40:07.063218Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

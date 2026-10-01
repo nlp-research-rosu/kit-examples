@@ -1,0 +1,10 @@
+requires "semantics.k"
+
+module PROGRAM
+  imports KPYC-SEMANTICS
+
+  // Exact image from /app/program.kpyc. Keeping it as a named constant makes
+  // the entry claim readable while pinning execution to the supplied bytes.
+  syntax KPyc ::= programImage() [function, total]
+  rule programImage() => #Kpyc(b"3.14.6",b"2b0e0d0a",b"2",#MarshalCode(#CoArgcount(0),#CoPosonlyargcount(0),#CoKwonlyargcount(0),#CoStacksize(1),#CoFlags(0),#CoCode(#MarshalDef(0,#CoCodeValue(RESUME(0), LOAD_CONST(0), MAKE_FUNCTION(0), STORE_NAME(0), LOAD_CONST(1), RETURN_VALUE(0), .CoCodeValueItems))),#CoConsts(#MarshalTuple(#MarshalCode(#CoArgcount(3),#CoPosonlyargcount(0),#CoKwonlyargcount(0),#CoStacksize(3),#CoFlags(67108867),#CoCode(#MarshalDef(1,#CoCodeValue(RESUME(0), LOAD_FAST(0), STORE_FAST(2), LOAD_FAST(1), STORE_FAST(0), LOAD_FAST(2), STORE_FAST(1), LOAD_FAST_BORROW_LOAD_FAST_BORROW(1), LOAD_FAST_BORROW(2), BUILD_TUPLE(3), RETURN_VALUE(0), .CoCodeValueItems))),#CoConsts(#MarshalTuple(#MarshalStr(b"Take integer state bindings; return final (a, b, r)."), .MarshalTupleItems)),#CoNames(#MarshalDef(2,#MarshalTuple(.MarshalTupleItems))),#CoLocalsplusnames(#MarshalTuple(#MarshalDef(3,#MarshalInternedStr(b"a")), #MarshalDef(4,#MarshalInternedStr(b"b")), #MarshalDef(5,#MarshalInternedStr(b"r")), .MarshalTupleItems)),#CoLocalspluskinds(#MarshalBytes(b"&&&")),#CoFilename(#MarshalDef(6,#MarshalInternedStr(b"program/program.py"))),#CoName(#MarshalDef(7,#MarshalInternedStr(b"run"))),#CoQualname(#MarshalRef(7)),#CoFirstlineno(1),#CoLinetable(#MarshalBytes(b"\x80\x00\xe0\x08\x09\x80A\xd8\x08\x09\x80A\xd8\x08\x09\x80A\xd8\x0b\x0c\x90\x11\x887\x80N")),#CoExceptiontable(#MarshalDef(8,#CoExceptiontableValue(.CoExceptiontableValueItems)))), #MarshalNone(), .MarshalTupleItems)),#CoNames(#MarshalTuple(#MarshalRef(7), .MarshalTupleItems)),#CoLocalsplusnames(#MarshalRef(2)),#CoLocalspluskinds(#MarshalRef(8)),#CoFilename(#MarshalRef(6)),#CoName(#MarshalDef(9,#MarshalInternedStr(b"<module>"))),#CoQualname(#MarshalRef(9)),#CoFirstlineno(1),#CoLinetable(#MarshalBytes(b"\xf0\x03\x01\x01\x01\xf4\x02\x05\x01\x13")),#CoExceptiontable(#MarshalRef(8))))
+endmodule

@@ -1,0 +1,59 @@
+{
+  "stderr": "",
+  "stdout": "PROOF PASSED: SPEC.run-ssh\n",
+  "task": {
+    "createdAt": "2026-09-30T09:47:46.386575Z",
+    "error": null,
+    "finishedAt": "2026-09-30T09:50:28.770450Z",
+    "id": "1668ffae-1945-465d-81c4-f98ad349e1cc",
+    "kind": "proof",
+    "metrics": {
+      "SPEC.run-ssh": {
+        "leaves": [
+          {
+            "conditions": [
+              "A:Int *Int B:Int >=Int -5",
+              "A:Int *Int B:Int <=Int 256",
+              "A:Int *Int B:Int +Int A:Int >=Int -5",
+              "A:Int *Int B:Int +Int A:Int <=Int 256",
+              "notBool A:Int *Int B:Int +Int A:Int -Int B:Int >=Int -5 andBool A:Int *Int B:Int +Int A:Int -Int B:Int <=Int 256"
+            ],
+            "coversGoal": true,
+            "node": 3,
+            "statuses": [
+              "terminal"
+            ]
+          }
+        ],
+        "longestPathLength": 1,
+        "nodeCount": 2,
+        "splitCount": 0
+      }
+    },
+    "result": {
+      "definitionId": "7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-02ced0c6244c19bab2fde6cca98d12724669527a3cc2a5dc47113aa4a8cf49ec",
+      "outcome": "proved"
+    },
+    "semantics": {
+      "commit": "e5d24a5429a4",
+      "id": "python-3-14-6"
+    },
+    "startedAt": "2026-09-30T09:47:49.898815Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 158871,
+      "queueMilliseconds": 3512,
+      "totalMilliseconds": 162383
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 157942,
+        "exitCode": 0,
+        "finishedAt": "2026-09-30T09:50:28.341349Z",
+        "outcome": "success",
+        "startedAt": "2026-09-30T09:47:50.399029Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

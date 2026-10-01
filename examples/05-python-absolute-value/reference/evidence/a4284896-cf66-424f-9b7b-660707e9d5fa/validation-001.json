@@ -1,0 +1,36 @@
+{
+  "stderr": "",
+  "stdout": "kore-exec /data/definitions/7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-33f1f55a8e18df2e1704b2266426fb7fba235949433c5bc541c48c9095f3a14a/definition/definition.kore --module VERIFICATION --prove /tmp/.kprove-2026-09-30-04-45-21-567-70d0ded7-00b5-49e8-a846-848cf49c3d0d/spec.kore --spec-module SPEC --output /tmp/.kprove-2026-09-30-04-45-21-567-70d0ded7-00b5-49e8-a846-848cf49c3d0d/result.kore\n",
+  "task": {
+    "createdAt": "2026-09-30T09:45:16.935134Z",
+    "error": null,
+    "finishedAt": "2026-09-30T09:45:39.520019Z",
+    "id": "b1f35056-0dbc-47d3-b1e2-deb62c4f7d72",
+    "kind": "proofDryRun",
+    "result": {
+      "definitionId": "7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-33f1f55a8e18df2e1704b2266426fb7fba235949433c5bc541c48c9095f3a14a",
+      "valid": true
+    },
+    "semantics": {
+      "commit": "e5d24a5429a4",
+      "id": "python-3-14-6"
+    },
+    "startedAt": "2026-09-30T09:45:20.412632Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 19107,
+      "queueMilliseconds": 3477,
+      "totalMilliseconds": 22584
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 18175,
+        "exitCode": 0,
+        "finishedAt": "2026-09-30T09:45:39.088926Z",
+        "outcome": "success",
+        "startedAt": "2026-09-30T09:45:20.913794Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}
