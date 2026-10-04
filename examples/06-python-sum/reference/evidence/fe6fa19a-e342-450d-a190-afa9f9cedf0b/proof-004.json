@@ -1,0 +1,321 @@
+{
+  "stderr": "WARNING:pyk.kcfg.explore:Unknown unique id attached to rule log entry: LogRewrite(origin=<LogOrigin.KORE_RPC: 'kore-rpc'>, result=RewriteSuccess(rule_id='UNKNOWN', rewritten_term=None))\nWARNING:pyk.kcfg.explore:Unknown unique id attached to rule log entry: LogRewrite(origin=<LogOrigin.KORE_RPC: 'kore-rpc'>, result=RewriteSuccess(rule_id='UNKNOWN', rewritten_term=None))\n",
+  "stdout": "PROOF PASSED: SPEC.nonpositive\nPROOF PASSED: SPEC.loop\nPROOF PASSED: SPEC.entry-negative\nPROOF PASSED: SPEC.entry-positive\n",
+  "task": {
+    "createdAt": "2026-10-02T07:31:14.719897Z",
+    "error": null,
+    "finishedAt": "2026-10-02T07:34:06.457825Z",
+    "id": "2ed65f16-5688-476c-aaa8-1f263c2fe9e0",
+    "kind": "proof",
+    "metrics": {
+      "SPEC.entry-negative": {
+        "leaves": [
+          {
+            "conditions": [
+              "notBool NId:Int ==Int 0",
+              "notBool SId:Int ==Int 0",
+              "notBool C:Int ==Int NId:Int",
+              "notBool C:Int ==Int SId:Int",
+              "N:Int <Int 0",
+              "N:Int <=Int 0",
+              "C:Int >=Int 4096",
+              "C:Int <Int Next:Int",
+              "NId:Int <Int Next:Int",
+              "SId:Int <Int Next:Int",
+              "Next:Int >=Int 4096",
+              "notBool C:Int in_keys ( REST:Map )",
+              "heapMax ( REST:Map ) <Int Next:Int",
+              "#PyObject ( ... obType: 1026 , static: NImm:Bool , payload: #PyLongObject ( N:Int ) ) ==K objectAt ( NId:Int , REST:Map )",
+              "#PyObject ( ... obType: 1026 , static: SImm:Bool , payload: #PyLongObject ( S:Int ) ) ==K objectAt ( SId:Int , REST:Map )",
+              "NId:Int >=Int 16 andBool NId:Int <=Int 277 orBool NId:Int >=Int 4096",
+              "SId:Int >=Int 16 andBool SId:Int <=Int 277 orBool SId:Int >=Int 4096"
+            ],
+            "coversGoal": true,
+            "node": 3,
+            "statuses": [
+              "terminal"
+            ]
+          }
+        ],
+        "longestPathLength": 1,
+        "nodeCount": 2,
+        "splitCount": 0
+      },
+      "SPEC.entry-positive": {
+        "leaves": [
+          {
+            "conditions": [
+              "notBool C:Int ==Int NId:Int",
+              "notBool C:Int ==Int SId:Int",
+              "N:Int >=Int 0",
+              "C:Int >=Int 4096",
+              "C:Int <Int Next:Int",
+              "NId:Int <Int Next:Int",
+              "SId:Int <Int Next:Int",
+              "Next:Int >=Int 4096",
+              "notBool C:Int in_keys ( REST:Map )",
+              "heapMax ( REST:Map ) <Int Next:Int",
+              "#PyObject ( ... obType: 1026 , static: NImm:Bool , payload: #PyLongObject ( N:Int ) ) ==K objectAt ( NId:Int , REST:Map )",
+              "#PyObject ( ... obType: 1026 , static: SImm:Bool , payload: #PyLongObject ( S:Int ) ) ==K objectAt ( SId:Int , REST:Map )",
+              "NId:Int >=Int 16 andBool NId:Int <=Int 277 orBool NId:Int >=Int 4096",
+              "SId:Int >=Int 16 andBool SId:Int <=Int 277 orBool SId:Int >=Int 4096",
+              "pairPayload ( payloadOf ( objectAt ( ??FinalNext:Int +Int -1 , ??FinalObjects:Map ) ) , ??FinalObjects:Map , 0 , 2 *Int S:Int +Int N:Int *Int N:Int +Int 1 )"
+            ],
+            "coversGoal": true,
+            "node": 3,
+            "statuses": [
+              "terminal"
+            ]
+          }
+        ],
+        "longestPathLength": 1,
+        "nodeCount": 2,
+        "splitCount": 0
+      },
+      "SPEC.loop": {
+        "leaves": [
+          {
+            "conditions": [
+              "notBool NId:Int ==Int 0",
+              "notBool SId:Int ==Int 0",
+              "notBool C:Int ==Int NId:Int",
+              "notBool C:Int ==Int SId:Int",
+              "N:Int <=Int 0",
+              "N:Int >=Int 0",
+              "C:Int >=Int 4096",
+              "C:Int <Int Next:Int",
+              "NId:Int <Int Next:Int",
+              "SId:Int <Int Next:Int",
+              "Next:Int >=Int 4096",
+              "notBool C:Int in_keys ( REST:Map )",
+              "heapMax ( REST:Map ) <Int Next:Int",
+              "#PyObject ( ... obType: 1026 , static: NImm:Bool , payload: #PyLongObject ( N:Int ) ) ==K objectAt ( NId:Int , REST:Map )",
+              "#PyObject ( ... obType: 1026 , static: SImm:Bool , payload: #PyLongObject ( S:Int ) ) ==K objectAt ( SId:Int , REST:Map )",
+              "NId:Int >=Int 16 andBool NId:Int <=Int 277 orBool NId:Int >=Int 4096",
+              "SId:Int >=Int 16 andBool SId:Int <=Int 277 orBool SId:Int >=Int 4096"
+            ],
+            "coversGoal": true,
+            "node": 7,
+            "statuses": [
+              "terminal"
+            ]
+          },
+          {
+            "conditions": [
+              "notBool NId:Int ==Int 0",
+              "notBool SId:Int ==Int 0",
+              "notBool C:Int ==Int NId:Int",
+              "notBool C:Int ==Int SId:Int",
+              "N:Int >=Int 0",
+              "notBool N:Int <=Int 0",
+              "C:Int >=Int 4096",
+              "C:Int <Int Next:Int",
+              "NId:Int <Int Next:Int",
+              "SId:Int <Int Next:Int",
+              "Next:Int >=Int 4096",
+              "notBool C:Int in_keys ( REST:Map )",
+              "notBool C:Int ==Int N:Int +Int 20",
+              "heapMax ( REST:Map ) <Int Next:Int",
+              "N:Int +Int -1 >=Int 0",
+              "N:Int +Int -1 >=Int -5",
+              "N:Int +Int -1 <=Int 256",
+              "S:Int +Int N:Int >=Int -5",
+              "S:Int +Int N:Int <=Int 256",
+              "N:Int +Int 20 <Int Next:Int",
+              "notBool C:Int ==Int S:Int +Int N:Int +Int 21",
+              "S:Int +Int N:Int +Int 21 <Int Next:Int",
+              "#PyObject ( ... obType: 1026 , static: NImm:Bool , payload: #PyLongObject ( N:Int ) ) ==K objectAt ( NId:Int , REST:Map )",
+              "#PyObject ( ... obType: 1026 , static: SImm:Bool , payload: #PyLongObject ( S:Int ) ) ==K objectAt ( SId:Int , REST:Map )",
+              "NId:Int >=Int 16 andBool NId:Int <=Int 277 orBool NId:Int >=Int 4096",
+              "SId:Int >=Int 16 andBool SId:Int <=Int 277 orBool SId:Int >=Int 4096",
+              "N:Int +Int 20 >=Int 16 andBool N:Int +Int 20 <=Int 277 orBool N:Int +Int 20 >=Int 4096",
+              "pairPayload ( payloadOf ( objectAt ( ??FinalNext:Int +Int -1 , ??FinalObjects:Map ) ) , ??FinalObjects:Map , 0 , 2 *Int S:Int +Int N:Int *Int N:Int +Int 1 )",
+              "S:Int +Int N:Int +Int 21 >=Int 16 andBool S:Int +Int N:Int +Int 21 <=Int 277 orBool S:Int +Int N:Int +Int 21 >=Int 4096"
+            ],
+            "coversGoal": true,
+            "node": 20,
+            "statuses": [
+              "terminal"
+            ]
+          },
+          {
+            "conditions": [
+              "notBool NId:Int ==Int 0",
+              "notBool SId:Int ==Int 0",
+              "notBool C:Int ==Int NId:Int",
+              "notBool C:Int ==Int SId:Int",
+              "notBool C:Int ==Int Next:Int",
+              "N:Int >=Int 0",
+              "notBool N:Int <=Int 0",
+              "C:Int >=Int 4096",
+              "C:Int <Int Next:Int",
+              "NId:Int <Int Next:Int",
+              "SId:Int <Int Next:Int",
+              "Next:Int >=Int 4096",
+              "notBool C:Int in_keys ( REST:Map )",
+              "notBool C:Int ==Int N:Int +Int 20",
+              "heapMax ( REST:Map ) <Int Next:Int",
+              "N:Int +Int -1 >=Int 0",
+              "N:Int +Int -1 >=Int -5",
+              "N:Int +Int -1 <=Int 256",
+              "C:Int <Int Next:Int +Int 1",
+              "Next:Int +Int 1 >=Int 4096",
+              "Next:Int <Int Next:Int +Int 1",
+              "N:Int +Int 20 <Int Next:Int +Int 1",
+              "#PyObject ( ... obType: 1026 , static: NImm:Bool , payload: #PyLongObject ( N:Int ) ) ==K objectAt ( NId:Int , REST:Map )",
+              "#PyObject ( ... obType: 1026 , static: SImm:Bool , payload: #PyLongObject ( S:Int ) ) ==K objectAt ( SId:Int , REST:Map )",
+              "maxInt ( Next:Int , heapMax ( REST:Map ) ) <Int Next:Int +Int 1",
+              "notBool S:Int +Int N:Int >=Int -5 andBool S:Int +Int N:Int <=Int 256",
+              "NId:Int >=Int 16 andBool NId:Int <=Int 277 orBool NId:Int >=Int 4096",
+              "SId:Int >=Int 16 andBool SId:Int <=Int 277 orBool SId:Int >=Int 4096",
+              "N:Int +Int 20 >=Int 16 andBool N:Int +Int 20 <=Int 277 orBool N:Int +Int 20 >=Int 4096",
+              "pairPayload ( payloadOf ( objectAt ( ??FinalNext:Int +Int -1 , ??FinalObjects:Map ) ) , ??FinalObjects:Map , 0 , 2 *Int S:Int +Int N:Int *Int N:Int +Int 1 )"
+            ],
+            "coversGoal": true,
+            "node": 22,
+            "statuses": [
+              "terminal"
+            ]
+          },
+          {
+            "conditions": [
+              "notBool NId:Int ==Int 0",
+              "notBool SId:Int ==Int 0",
+              "notBool C:Int ==Int NId:Int",
+              "notBool C:Int ==Int SId:Int",
+              "notBool C:Int ==Int Next:Int",
+              "N:Int >=Int 0",
+              "notBool N:Int <=Int 0",
+              "C:Int >=Int 4096",
+              "C:Int <Int Next:Int",
+              "NId:Int <Int Next:Int",
+              "SId:Int <Int Next:Int",
+              "Next:Int >=Int 4096",
+              "notBool C:Int in_keys ( REST:Map )",
+              "notBool C:Int ==Int Next:Int +Int 1",
+              "heapMax ( REST:Map ) <Int Next:Int",
+              "N:Int +Int -1 >=Int 0",
+              "C:Int <Int Next:Int +Int 2",
+              "Next:Int +Int 2 >=Int 4096",
+              "Next:Int <Int Next:Int +Int 2",
+              "Next:Int +Int 1 <Int Next:Int +Int 2",
+              "#PyObject ( ... obType: 1026 , static: NImm:Bool , payload: #PyLongObject ( N:Int ) ) ==K objectAt ( NId:Int , REST:Map )",
+              "#PyObject ( ... obType: 1026 , static: SImm:Bool , payload: #PyLongObject ( S:Int ) ) ==K objectAt ( SId:Int , REST:Map )",
+              "notBool N:Int +Int -1 >=Int -5 andBool N:Int +Int -1 <=Int 256",
+              "notBool S:Int +Int N:Int >=Int -5 andBool S:Int +Int N:Int <=Int 256",
+              "NId:Int >=Int 16 andBool NId:Int <=Int 277 orBool NId:Int >=Int 4096",
+              "SId:Int >=Int 16 andBool SId:Int <=Int 277 orBool SId:Int >=Int 4096",
+              "maxInt ( Next:Int +Int 1 , maxInt ( Next:Int , heapMax ( REST:Map ) ) ) <Int Next:Int +Int 2",
+              "Next:Int +Int 1 >=Int 16 andBool Next:Int +Int 1 <=Int 277 orBool Next:Int +Int 1 >=Int 4096",
+              "pairPayload ( payloadOf ( objectAt ( ??FinalNext:Int +Int -1 , ??FinalObjects:Map ) ) , ??FinalObjects:Map , 0 , 2 *Int S:Int +Int N:Int *Int N:Int +Int 1 )"
+            ],
+            "coversGoal": true,
+            "node": 23,
+            "statuses": [
+              "terminal"
+            ]
+          },
+          {
+            "conditions": [
+              "notBool NId:Int ==Int 0",
+              "notBool SId:Int ==Int 0",
+              "notBool C:Int ==Int NId:Int",
+              "notBool C:Int ==Int SId:Int",
+              "notBool C:Int ==Int Next:Int",
+              "N:Int >=Int 0",
+              "notBool N:Int <=Int 0",
+              "C:Int >=Int 4096",
+              "C:Int <Int Next:Int",
+              "NId:Int <Int Next:Int",
+              "SId:Int <Int Next:Int",
+              "Next:Int >=Int 4096",
+              "notBool C:Int in_keys ( REST:Map )",
+              "heapMax ( REST:Map ) <Int Next:Int",
+              "N:Int +Int -1 >=Int 0",
+              "S:Int +Int N:Int >=Int -5",
+              "S:Int +Int N:Int <=Int 256",
+              "C:Int <Int Next:Int +Int 1",
+              "Next:Int +Int 1 >=Int 4096",
+              "Next:Int <Int Next:Int +Int 1",
+              "notBool C:Int ==Int S:Int +Int N:Int +Int 21",
+              "#PyObject ( ... obType: 1026 , static: NImm:Bool , payload: #PyLongObject ( N:Int ) ) ==K objectAt ( NId:Int , REST:Map )",
+              "#PyObject ( ... obType: 1026 , static: SImm:Bool , payload: #PyLongObject ( S:Int ) ) ==K objectAt ( SId:Int , REST:Map )",
+              "S:Int +Int N:Int +Int 21 <Int Next:Int +Int 1",
+              "maxInt ( Next:Int , heapMax ( REST:Map ) ) <Int Next:Int +Int 1",
+              "notBool N:Int +Int -1 >=Int -5 andBool N:Int +Int -1 <=Int 256",
+              "NId:Int >=Int 16 andBool NId:Int <=Int 277 orBool NId:Int >=Int 4096",
+              "SId:Int >=Int 16 andBool SId:Int <=Int 277 orBool SId:Int >=Int 4096",
+              "pairPayload ( payloadOf ( objectAt ( ??FinalNext:Int +Int -1 , ??FinalObjects:Map ) ) , ??FinalObjects:Map , 0 , 2 *Int S:Int +Int N:Int *Int N:Int +Int 1 )",
+              "S:Int +Int N:Int +Int 21 >=Int 16 andBool S:Int +Int N:Int +Int 21 <=Int 277 orBool S:Int +Int N:Int +Int 21 >=Int 4096"
+            ],
+            "coversGoal": true,
+            "node": 24,
+            "statuses": [
+              "terminal"
+            ]
+          }
+        ],
+        "longestPathLength": 9,
+        "nodeCount": 23,
+        "splitCount": 4
+      },
+      "SPEC.nonpositive": {
+        "leaves": [
+          {
+            "conditions": [
+              "notBool NId:Int ==Int 0",
+              "notBool SId:Int ==Int 0",
+              "notBool C:Int ==Int NId:Int",
+              "notBool C:Int ==Int SId:Int",
+              "N:Int <=Int 0",
+              "C:Int >=Int 4096",
+              "C:Int <Int Next:Int",
+              "NId:Int <Int Next:Int",
+              "SId:Int <Int Next:Int",
+              "Next:Int >=Int 4096",
+              "notBool C:Int in_keys ( REST:Map )",
+              "heapMax ( REST:Map ) <Int Next:Int",
+              "#PyObject ( ... obType: 1026 , static: NImm:Bool , payload: #PyLongObject ( N:Int ) ) ==K objectAt ( NId:Int , REST:Map )",
+              "#PyObject ( ... obType: 1026 , static: SImm:Bool , payload: #PyLongObject ( S:Int ) ) ==K objectAt ( SId:Int , REST:Map )",
+              "NId:Int >=Int 16 andBool NId:Int <=Int 277 orBool NId:Int >=Int 4096",
+              "SId:Int >=Int 16 andBool SId:Int <=Int 277 orBool SId:Int >=Int 4096"
+            ],
+            "coversGoal": true,
+            "node": 3,
+            "statuses": [
+              "terminal"
+            ]
+          }
+        ],
+        "longestPathLength": 1,
+        "nodeCount": 2,
+        "splitCount": 0
+      }
+    },
+    "result": {
+      "definitionId": "7_1_337-haskell-python-3-14-6-e5d24a5429a4-pyk1-1b67e855c2ed34e6f69e210147b3bab7af56aca600690f0e1b6c82b25ae22f7b",
+      "outcome": "proved"
+    },
+    "semantics": {
+      "commit": "e5d24a5429a4",
+      "id": "python-3-14-6"
+    },
+    "startedAt": "2026-10-02T07:31:14.725960Z",
+    "status": "completed",
+    "timing": {
+      "executionMilliseconds": 171731,
+      "queueMilliseconds": 6,
+      "totalMilliseconds": 171737
+    },
+    "toolRuns": [
+      {
+        "durationMilliseconds": 171722,
+        "exitCode": 0,
+        "finishedAt": "2026-10-02T07:34:06.450712Z",
+        "outcome": "success",
+        "startedAt": "2026-10-02T07:31:14.728696Z",
+        "tool": "kprove"
+      }
+    ]
+  }
+}

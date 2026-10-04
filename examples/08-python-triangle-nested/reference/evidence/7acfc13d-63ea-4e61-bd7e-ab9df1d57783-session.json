@@ -1,0 +1,13 @@
+{
+  "sessionId": "7acfc13d-63ea-4e61-bd7e-ab9df1d57783",
+  "semantics": {
+    "commit": "e5d24a5429a4",
+    "id": "python-3-14-6",
+    "repo": "https://github.com/nlp-research-rosu/semantics-python-3.14.6"
+  },
+  "attemptsUsed": 8,
+  "validationsUsed": 1,
+  "runsUsed": 0,
+  "projectRoot": "examples/08-python-triangle-nested",
+  "workspaceDir": "examples/08-python-triangle-nested/.kprover/sessions/7acfc13d-63ea-4e61-bd7e-ab9df1d57783"
+}

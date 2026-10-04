@@ -1,0 +1,13 @@
+{
+  "sessionId": "fe6fa19a-e342-450d-a190-afa9f9cedf0b",
+  "semantics": {
+    "commit": "e5d24a5429a4",
+    "id": "python-3-14-6",
+    "repo": "https://github.com/nlp-research-rosu/semantics-python-3.14.6"
+  },
+  "attemptsUsed": 4,
+  "validationsUsed": 3,
+  "runsUsed": 0,
+  "projectRoot": "examples/06-python-sum",
+  "workspaceDir": "examples/06-python-sum/.kprover/sessions/fe6fa19a-e342-450d-a190-afa9f9cedf0b"
+}

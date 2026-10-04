@@ -4,10 +4,10 @@ Agentic formal verification, end to end: you hand an AI agent a program or
 smart contract and a property, and KIT writes the K reachability specification, proves it on
 our hosted Prover, audits its own proof in a clean room, and leaves you a
 machine-checked `PROOF.md`. This repository is the shortest path to seeing that
-happen with the HKG ERC20 token and three Python programs.
+happen with the HKG ERC20 token and nine Python programs.
 
-Two EVM examples, same contract, increasing scope, plus three Python
-starters from KleverBench:
+Two EVM examples, same contract, increasing scope, plus nine Python
+examples from KleverBench:
 
 | Example | Scope | Wall clock |
 |---|---|---|
@@ -16,9 +16,16 @@ starters from KleverBench:
 | `examples/03-python-swap` | integer variable swap and tuple return | 1h34m |
 | `examples/04-python-arithmetic` | integer multiplication, addition, and subtraction | 2h45m |
 | `examples/05-python-absolute-value` | conditional branching and integer negation | 1h52m |
+| `examples/06-python-sum` | decreasing loop and accumulated integer sum | — |
+| `examples/07-python-count-even` | loop with parity branch and even-index count | — |
+| `examples/08-python-triangle-nested` | nested loops and triangular count | — |
+| `examples/09-python-nested-with-branch` | nested loops, conditional execution, and preserved locals | — |
+| `examples/10-python-pipeline` | multiplication, absolute value, loop, and final addition | — |
+| `examples/11-python-stats-pipeline` | min/max branches, range, loop, and final addition | — |
 
-The Python times are recorded agent runtimes with KIT v0.1.3, rounded to
-the nearest minute. All three proofs passed and completed KIT's proof audit.
+The times for examples 3–5 are recorded agent runtimes with KIT v0.1.3,
+rounded to the nearest minute. Examples 6–11 use KIT v0.1.4.
+All nine Python examples have validated proofs on the `reference` branch.
 
 Nothing here teaches K. It assumes you already read K specifications fluently
 and want to see what an agent does with them.
@@ -196,6 +203,83 @@ claude
 Paste `PROMPT.md` with the same Python semantics and KIT prerequisites.
 For arbitrary integer inputs `A` and `R`, prove that `run(A, R)` returns
 `(A, abs(A))`. The proof covers the negative and nonnegative branches.
+
+## Example 6: Python sum
+
+```bash
+cd examples/06-python-sum
+claude
+```
+
+Use KIT v0.1.4 or later and paste `PROMPT.md` with the same Python
+semantics prerequisites.
+
+For arbitrary integer inputs `N` and `S`, prove partial correctness of `run(N, S)`: a normal return is `(N, S)` when `N <= 0`, and `(0, S + N * (N + 1) // 2)` when `N > 0`.
+
+## Example 7: Python count even
+
+```bash
+cd examples/07-python-count-even
+claude
+```
+
+Use KIT v0.1.4 or later and paste `PROMPT.md` with the same Python
+semantics prerequisites.
+
+For arbitrary integer inputs `N`, `I` and `C`, prove partial correctness of `run(N, I, C)`: a normal return is `(N, 0, 0)` when `N < 0`, and `(N, N, (N + 1) // 2)` when `N >= 0`. Initial `I` and `C` are overwritten.
+
+## Example 8: Python nested triangular count
+
+```bash
+cd examples/08-python-triangle-nested
+claude
+```
+
+Use KIT v0.1.4 or later and paste `PROMPT.md` with the same Python
+semantics prerequisites.
+
+For arbitrary integer inputs `N`, `I`, `J` and `C`, prove partial correctness of `run(N, I, J, C)`: a normal return is `(N, N, J, 0)` when `N <= 0`, and `(N, 0, 0, N * (N + 1) // 2)` when `N > 0`. Initial `I` and `C` are overwritten.
+
+## Example 9: Python nested loops with a branch
+
+```bash
+cd examples/09-python-nested-with-branch
+claude
+```
+
+Use KIT v0.1.4 or later and paste `PROMPT.md` with the same Python
+semantics prerequisites.
+
+For arbitrary integer inputs `A`, `B`, `I`, `J` and `R`, prove partial correctness of `run(A, B, I, J, R)`: a normal return is `(A, B, min(A, 0), J_final, L * (L + 1) // 2)`, where `L = max(0, min(A, B))`. `J_final` is 0 if `A > 0` and `B > 0`, otherwise the incoming `J`. Initial `I` and `R` are overwritten.
+
+## Example 10: Python arithmetic pipeline
+
+```bash
+cd examples/10-python-pipeline
+claude
+```
+
+Use KIT v0.1.4 or later and paste `PROMPT.md` with the same Python
+semantics prerequisites.
+
+For arbitrary integer inputs `A`, `B`, `N`, `T`, `I` and `R`, prove partial correctness of `run(A, B, N, T, I, R)`: every normal return is `(A, B, N, abs(A * B), max(N, 0), max(N, 0) * abs(A * B) + A)`. Initial `T`, `I` and `R` are overwritten.
+
+## Example 11: Python statistics pipeline
+
+```bash
+cd examples/11-python-stats-pipeline
+claude
+```
+
+Use KIT v0.1.4 or later and paste `PROMPT.md` with the same Python
+semantics prerequisites.
+
+For arbitrary integer inputs `A`, `B`, `N`, `M`, `X`, `T`, `I` and `R`, prove partial correctness of `run(A, B, N, M, X, T, I, R)`: every normal return is `(A, B, N, min(A, B), max(A, B), D, max(N, 0), max(N, 0) * D + min(A, B))`, where `D = max(A, B) - min(A, B)`. Initial `M`, `X`, `T`, `I` and `R` are overwritten.
+
+These six loop examples prove partial correctness of the compiled function
+body in a prepared runtime frame. Their reference reports state the frame
+conditions; module initialization, argument binding and a separate termination
+theorem are outside that scope.
 
 These programs are Python rewrites of KleverBench programs. Their prompts
 state the original integer properties directly; KIT writes the formal
