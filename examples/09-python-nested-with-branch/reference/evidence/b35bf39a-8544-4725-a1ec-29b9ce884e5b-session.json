@@ -1,0 +1,13 @@
+{
+  "sessionId": "b35bf39a-8544-4725-a1ec-29b9ce884e5b",
+  "semantics": {
+    "commit": "e5d24a5429a4",
+    "id": "python-3-14-6",
+    "repo": "https://github.com/nlp-research-rosu/semantics-python-3.14.6"
+  },
+  "attemptsUsed": 1,
+  "validationsUsed": 0,
+  "runsUsed": 0,
+  "projectRoot": "examples/09-python-nested-with-branch",
+  "workspaceDir": "examples/09-python-nested-with-branch/.kprover/sessions/b35bf39a-8544-4725-a1ec-29b9ce884e5b"
+}

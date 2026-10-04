@@ -1,0 +1,9 @@
+# Scope
+
+The theorem is partial correctness of the exact original compiled `run` function body, from bytecode instruction 0 through normal exit in a prepared single-interpreter, single-thread frame with an empty caller stack. Module initialization, argument binding, a separate termination theorem and reference-count implementation details are outside this boundary.
+
+Every initial parameter is an arbitrary mathematical integer. Both cached and dynamic integer representations are admitted, as is aliasing when the payload constraints agree. The code address and allocation cursor are fresh relative to the existing heap; these restrictions express a well-formed runtime state and impose no numeric bound on integer values. Metadata not read by the body is symbolic. Unobserved cells and other heap allocations are framed or abstracted because the source contract observes only the returned tuple.
+
+Let L=max(0,min(a,b)). The final result is (a,b,min(a,0),j_final,L*(L+1)/2), where j_final=0 if a>0 and b>0, otherwise it retains the incoming j. Incoming i and res are overwritten. The observer constrains twice the result count, avoiding division without weakening the integer property.
+
+The enabled loop claims preserve twice the accumulated count plus remaining triangular work, equated to the fixed final result from original A and B. Separate within-bound claims cover A<=B and A>B. The above-bound loop preserves Res=0 until I=B; the disabled loop preserves Res=0 and includes I=0. Every inner invariant includes J=0. Four entry claims partition all integer a,b combinations. Claim dependencies are acyclic apart from each claim's explicit self-circularity. The final tuple is observed at `FinalNext-1`: BUILD_TUPLE is the last allocation, and the immediately following RETURN_VALUE consumes its reference at the top-level normal-exit boundary. All returned tuple fields are constrained. No execution-skipping rule or trusted claim is used.

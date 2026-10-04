@@ -1,0 +1,13 @@
+{
+  "sessionId": "60089a3f-6b0e-4e03-a91c-cd1cc21c0504",
+  "semantics": {
+    "commit": "e5d24a5429a4",
+    "id": "python-3-14-6",
+    "repo": "https://github.com/nlp-research-rosu/semantics-python-3.14.6"
+  },
+  "attemptsUsed": 2,
+  "validationsUsed": 1,
+  "runsUsed": 0,
+  "projectRoot": "examples/07-python-count-even",
+  "workspaceDir": "examples/07-python-count-even/.kprover/sessions/60089a3f-6b0e-4e03-a91c-cd1cc21c0504"
+}
