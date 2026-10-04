@@ -6,9 +6,9 @@ import re
 ROOT = Path(__file__).resolve().parent
 values = [-2 ** 80, -257, -1, 0, 1, 256, 257, 2 ** 80]
 lengths = [-2 ** 80, -2, -1, 0, 1, 2, 5, 12]
-task = 't09_pipeline'
+example = 'pipeline'
 root = Path(__file__).resolve().parents[1]
-module_spec = importlib.util.spec_from_file_location(task, Path(__file__).resolve().parents[3] / 'program' / 'program.py')
+module_spec = importlib.util.spec_from_file_location(example, Path(__file__).resolve().parents[3] / 'program' / 'program.py')
 module = importlib.util.module_from_spec(module_spec)
 module_spec.loader.exec_module(module)
 cases = 0
@@ -32,4 +32,4 @@ original = re.findall('([A-Z_]+\\(\\d+\\))', codes[1])
 helper = re.findall('\\(\\d+ \\|-> ([A-Z_]+\\(\\d+\\))\\)', (root / 'program-helper.k').read_text())
 assert original == helper
 result = {'source_cases': cases, 'loop_cases': loops, 'code_units': len(original), 'status': 'passed', 'kind': 'finite evidence, not universal proof'}
-print(task, json.dumps(result))
+print(example, json.dumps(result))

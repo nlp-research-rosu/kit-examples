@@ -4,9 +4,9 @@ import itertools
 import json
 import re
 root = Path(__file__).resolve().parent
-task = 't08_nested_with_branch'
+example = 'nested_with_branch'
 project = Path(__file__).resolve().parents[1]
-loader = importlib.util.spec_from_file_location(task, Path(__file__).resolve().parents[3] / 'program' / 'program.py')
+loader = importlib.util.spec_from_file_location(example, Path(__file__).resolve().parents[3] / 'program' / 'program.py')
 module = importlib.util.module_from_spec(loader)
 loader.loader.exec_module(module)
 cases = 0
@@ -30,4 +30,4 @@ ops = re.findall('([A-Z_]+\\(\\d+\\))', codes[1])
 helper = re.findall('\\(\\d+ \\|-> ([A-Z_]+\\(\\d+\\))\\)', (project / 'program-helper.k').read_text())
 assert ops == helper
 result = dict(source_cases=cases, inner_cases=inner_cases, code_units=len(ops), status='passed', kind='finite evidence, not universal proof')
-print(task, json.dumps(result))
+print(example, json.dumps(result))

@@ -24,10 +24,8 @@ examples from KleverBench:
 | `examples/11-python-stats-pipeline` | min/max branches, range, loop, and final addition | — |
 
 The times for examples 3–5 are recorded agent runtimes with KIT v0.1.3,
-rounded to the nearest minute. Examples 6–11 use KIT v0.1.4 and have no
-comparable agent wall-clock measurement; their proof task timings are in the
-reference evidence. All nine Python proofs passed and completed KIT's proof
-audit.
+rounded to the nearest minute. Examples 6–11 use KIT v0.1.4.
+All nine Python examples have validated proofs on the `reference` branch.
 
 Nothing here teaches K. It assumes you already read K specifications fluently
 and want to see what an agent does with them.

@@ -1,4 +1,4 @@
-# T04 repair scope
+# Sum: proof scope
 
 Prove the unchanged run function from its initialized bytecode frame, over
 arbitrary exact Python integer n and sum, including cached and heap objects.
@@ -6,17 +6,15 @@ The source body executes unchanged. For n <= 0 the tuple is (n,sum); for
 n > 0 the tuple is (0,sum+n*(n+1)/2). The scaled postcondition uses twice
 the sum to avoid integer division. No bounds on mathematical input values.
 
-Entry starts at instruction 0 with no caller frame, matching the original
-experiment boundary. This does not prove Python argument binding. Allocation
-assumes a well-formed finite heap below nextId. Input integers may alias when
-their values agree. Booleans and int subclasses are outside the exact-int domain.
+Entry starts at instruction 0 with no caller frame. This does not prove
+Python argument binding. Allocation assumes a well-formed finite heap below
+nextId. Input integers may alias when their values agree. Booleans and int subclasses are outside the exact-int domain.
 
 Extensions: targetRunCode is the unchanged decoded instruction map; heapMax
 is the maximum Int map key, with a floor of 4095. pairResult/pairPayload observe tuple
 contents. Pure objectAt and maximum-key lemmas follow structural map
 lookup and integer order. No opcode/control rewrite, trusted claim, or changed
-semantics is added. Every claim remains unproved until a successful backend
-result and the final proof audit. Constructor review: same-agent review.
+semantics is added.
 
 ## Arithmetic and representation review
 
